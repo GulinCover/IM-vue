@@ -1,0 +1,78 @@
+{
+  "browserTip": "请更换成谷歌浏览器或谷歌内核的浏览器,在其它浏览器上可能会出现不适配或错误的情况,以至于影响您的体验.为了更好的体验,建议更换成谷歌浏览器或谷歌内核的浏览器,谢谢.",
+  "topBarMarketplace": "市场",
+  "topBarExplore": "发现",
+  "topBarIssues": "质疑",
+  "topBarSearchPlaceholder": "搜索跳转到...",
+  "indexPageExploreButton": "发现更多",
+  "indexPageH2": "发现有趣的人和事来提升自己,警醒自己.",
+  "indexPageP": "您的事实性<a href='' target='_blank'>陈述</a>可帮助别人避免一些不必要的麻烦.",
+  "bottomList": [
+    [
+      {
+        "name": "主页",
+        "url": ""
+      },
+      {
+        "name": "关于",
+        "url": ""
+      },
+      {
+        "name": "Shop",
+        "url": ""
+      },
+      {
+        "name": "联系",
+        "url": ""
+      },
+      {
+        "name": "投诉",
+        "url": ""
+      }
+
+    ],
+    [
+      {
+        "name": "打赏",
+        "url": ""
+      },
+      {
+        "name": "公示",
+        "url": ""
+      },
+      {
+        "name": "账户状态",
+        "url": ""
+      },
+      {
+        "name": "账户安全",
+        "url": ""
+      }
+
+    ],
+    [
+      {
+        "name": "团队",
+        "url": ""
+      },
+      {
+        "name": "隐私",
+        "url": ""
+      },
+      {
+        "name": "政策",
+        "url": ""
+      }
+    ]
+  ],
+  "github": "©2021 GitHub, Inc,感谢github提供支持",
+  "indexPageTip": "展示可发掘的社会事件和个人事迹,督促他人,切勿传播他人任何隐私,尊重他人.",
+  "indexPageTip2": "去发现更多的新闻时事.",
+  "topic": "著述",
+  "indexPageLeftSearchPlaceholder": "查询著述...",
+  "indexPageLeftTitle": "为什么认证?",
+  "indexPageLeftDesc": "WeakType是为了展示那些曾被人遗忘的曾经,而建立的.在此不仅可以吐槽遇到的不快,还能保留那些不曾留下的曾经.",
+  "certification": "官方认证",
+  "indexPageRightTitle": "历史记录",
+  "showMore": "更多..."
+}
