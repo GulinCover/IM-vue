@@ -74,5 +74,32 @@
   "indexPageLeftDesc": "WeakType是为了展示那些曾被人遗忘的曾经,而建立的.在此不仅可以吐槽遇到的不快,还能保留那些不曾留下的曾经.",
   "certification": "官方认证",
   "indexPageRightTitle": "历史记录",
-  "showMore": "更多..."
+  "showMore": "更多...",
+
+
+
+  "explore": "发现",
+  "hot": "热榜",
+  "policy": "政策",
+  "exploreTitle": "在这里我们将会有一些感兴趣的发现...",
+  "moreHotTopic": "查看更多热论...",
+  "moreTopic": "探索更多著述...",
+  "subscribe": "订阅",
+
+
+
+  "topicPageH2": "著述",
+  "topicPageDesc": "去浏览一些感兴趣的著述吧.",
+  "topicPageAllTopicEntry": "所有板块",
+  "topicPageRelatedTopicEntry": "相关板块",
+
+
+
+  "hotPageH2": "热论",
+  "hotPageDesc": "浏览当下最热话题.",
+  "hotPageEventRelatedButton": "相关事件",
+  "hotPageEntryRelatedButton": "相关板块",
+  "hotPageTimeRelatedButton": "时间",
+  "hotPageHot": "热论话题",
+  "hotPageTopic": "著述"
 }
