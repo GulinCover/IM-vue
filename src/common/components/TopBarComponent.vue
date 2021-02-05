@@ -42,10 +42,11 @@
             </ul>
           </div>
         </div>
-        <div class="issues">{{ locale.topBarIssues }}</div>
-        <div class="marketplace">{{ locale.topBarMarketplace }}</div>
-        <div class="explore">{{ locale.topBarExplore }}</div>
+        <div class="issues is-hover" @click="jump('/issues')">{{ locale.topBarIssues }}</div>
+        <div class="marketplace is-hover" @click="jump('/marketplace')">{{ locale.topBarMarketplace }}</div>
+        <div class="explore is-hover" @click="jump('/explore')">{{ locale.topBarExplore }}</div>
       </div>
+
       <div class="top-bar-notification">
         <div class="top-bar-bell">
           <bell-icon :size="'18'"/>
@@ -152,12 +153,21 @@ export default {
     searchFocusOut() {
       this.isSearchActive = false
     },
+
+    jump(web) {
+      if (web===`/${this.$route.name}`) return
+      this.$router.push(web)
+    }
   },
 }
 </script>
 
 <style scoped lang="scss">
 @import "~@/api/GlobalApi.scss";
+
+div.is-hover:hover {
+  cursor: pointer;
+}
 
 @media all and (min-width: 768px) {
   .top-bar-component {
@@ -304,6 +314,9 @@ export default {
         align-items: center;
 
         div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           height: 30px;
           margin-right: 16px;
         }

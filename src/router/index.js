@@ -23,6 +23,21 @@ const routes = [
         path:"/hot",
         name:"hot",
         component:()=>import("@/views/hotPage/Index")
+    },
+    {
+        path:"/policy",
+        name:"policy",
+        component:()=>import("@/views/policyPage/Index")
+    },
+    {
+        path:"/marketplace",
+        name:"marketplace",
+        component:()=>import("@/views/marketplacePage/Index")
+    },
+    {
+        path:"/marketplace/detail/:id",
+        name:"marketplaceDetail",
+        component:()=>import("@/views/marketplacePage/detailPage/Index")
     }
 ]
 

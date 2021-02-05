@@ -3,19 +3,19 @@
     <div class="nav">
       <div></div>
       <div class="explore" ref="explore">
-        <a href="/explore">{{ locate.explore }}</a>
+        <a @click="jump('/explore')">{{ locate.explore }}</a>
       </div>
       <div class="topic" ref="topic">
-        <a href="/topic">{{ locate.topic }}</a>
+        <a @click="jump('/topic')">{{ locate.topic }}</a>
       </div>
       <div class="hot" ref="hot">
-        <a href="/hot">{{ locate.hot }}</a>
+        <a @click="jump('/hot')">{{ locate.hot }}</a>
       </div>
       <div class="policy" ref="policy">
-        <a href="/policy">{{ locate.policy }}</a>
+        <a @click="jump('/policy')">{{ locate.policy }}</a>
       </div>
       <div>
-        <a href="">申请词条</a>
+        <a>申请词条</a>
       </div>
     </div>
   </div>
@@ -39,6 +39,11 @@ export default {
         nav.style.top = '0'
       }
     },
+
+    jump(web) {
+      if (web===`/${this.$route.name}`) return
+      this.$router.push(web)
+    }
   },
   mounted() {
     window.addEventListener("scroll", this.navFix)
