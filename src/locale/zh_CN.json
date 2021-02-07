@@ -160,5 +160,61 @@
   "entryRecommended": "相关板块推荐",
   "viewAll": "浏览全部",
   "types": "售卖类型",
-  "categories": "板块分类"
+  "categories": "板块分类",
+
+
+
+  "repositoryPageNav": [
+    {
+      "alias": "overview",
+      "name": "预览",
+      "url": ""
+    },
+    {
+      "alias": "public",
+      "name": "发布的著述",
+      "url": ""
+    },
+    {
+      "alias": "comment",
+      "name": "发表的回复",
+      "url": ""
+    },
+    {
+      "alias": "wallet",
+      "name": "钱包",
+      "url": ""
+    },
+    {
+      "alias": "selling",
+      "name": "正在售卖",
+      "url": ""
+    },
+    {
+      "alias": "success",
+      "name": "已拍下",
+      "url": ""
+    },
+    {
+      "alias": "failed",
+      "name": "竞价失败",
+      "url": ""
+    },
+    {
+      "alias": "biding",
+      "name": "正在竞价",
+      "url": ""
+    }
+  ],
+  "profileEditor": "编辑"
 }
+
+
+
+
+
+
+
+
+
+

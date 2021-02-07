@@ -1,5 +1,5 @@
 <template>
-  <div class="bottom-wrapper">
+  <div class="bottom-wrapper" ref="background">
     <div>
       <ul>
         <li v-for="(item, key) in locale.bottomListLeft" :key="key">
@@ -22,15 +22,23 @@
 import {GithubIcon} from "vue-feather-icons"
 export default {
   name: "BottomComponent",
+  props: [
+      "backgroundColor"
+  ],
   components: {
     GithubIcon,
   },
   data() {
     return {
       locale:this.$locate,
-
     }
   },
+  mounted() {
+    this.$nextTick(()=>{
+      if (this.backgroundColor === '' || this.backgroundColor === null || this.backgroundColor === undefined) return
+      this.$refs.background.style.background = this.backgroundColor
+    })
+  }
 
 }
 </script>

@@ -35,9 +35,19 @@ const routes = [
         component:()=>import("@/views/marketplacePage/Index")
     },
     {
+        path:"/marketplace/search",
+        name:"marketplaceSearch",
+        component:()=>import("@/views/marketplacePage/searchPage/Index")
+    },
+    {
         path:"/marketplace/detail/:id",
         name:"marketplaceDetail",
         component:()=>import("@/views/marketplacePage/detailPage/Index")
+    },
+    {
+        path:"/repository",
+        name:"repository",
+        component:()=>import("@/views/repositoryPage/Index")
     }
 ]
 
