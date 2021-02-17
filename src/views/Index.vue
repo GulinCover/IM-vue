@@ -3,7 +3,7 @@
 
     <header>
       <div class="tip" :class="{'not-active':!isTipActive}">
-        <h3>{{ locate.browserTip }}</h3>
+        <h3>{{ locale.browserTip }}</h3>
         <div @click="closeTip">
           <x-circle-icon :size="'18'"/>
         </div>
@@ -39,7 +39,7 @@ export default {
   name: 'Home',
   data() {
     return {
-      locate: this.$locate,
+      locale: this.$locale,
       isTipActive: false
     }
   },
@@ -64,7 +64,7 @@ export default {
       return
     }
     this.isTipActive = true
-  }
+  },
 }
 </script>
 

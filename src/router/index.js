@@ -48,6 +48,41 @@ const routes = [
         path:"/repository",
         name:"repository",
         component:()=>import("@/views/repositoryPage/Index")
+    },
+    {
+        path: "/user/manager",
+        name: "userManager",
+        component: ()=>import("@/views/userManagerPage/Index")
+    },
+    {
+        path: "/topic/public/:id",
+        name: "topicPublic",
+        component: ()=>import("@/views/topicPublicPage/Index")
+    },
+    {
+        path: "/topic/comment/:id",
+        name: "topicComment",
+        component: ()=>import("@/views/topicPublicPage/commentPage/Index")
+    },
+    {
+        path: "/topic/talk/:id",
+        name: "topicTalk",
+        component: ()=>import("@/views/topicPublicPage/talkPage/Index")
+    },
+    {
+        path: "/topic/branch/:id",
+        name: "topicBranch",
+        component: ()=>import("@/views/topicPublicPage/branchPage/Index")
+    },
+    {
+        path: "/topic/contributor/:id",
+        name: "topicContributor",
+        component: ()=>import("@/views/topicPublicPage/contributorPage/Index")
+    },
+    {
+        path: "/topic/manager/:id",
+        name: "topicManager",
+        component: ()=>import("@/views/topicPublicPage/managerPage/Index")
     }
 ]
 

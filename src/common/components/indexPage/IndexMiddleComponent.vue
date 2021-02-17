@@ -56,7 +56,7 @@ export default {
     return {
       indexPath: "https://github.com",
       icons: icons,
-      locale: this.$locate,
+      locale: this.$locale,
       exploreLink: "/explore",
     };
   }

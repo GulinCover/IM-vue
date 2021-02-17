@@ -7,12 +7,12 @@
     <main>
       <nav-component
           :path-name="this.$route.name"
-          :locate="locate"
+          :locale="locale"
       />
 
       <div class="topic-desc">
-        <h2>{{locate.topicPageH2}}</h2>
-        <p>{{locate.topicPageDesc}}</p>
+        <h2>{{locale.topicPageH2}}</h2>
+        <p>{{locale.topicPageDesc}}</p>
       </div>
 
       <ul class="topic-recommend">
@@ -30,7 +30,7 @@
       </ul>
       <div class="topic-content">
         <div class="left">
-          <h3>{{locate.topicPageAllTopicEntry}}</h3>
+          <h3>{{locale.topicPageAllTopicEntry}}</h3>
           <ul>
             <li v-for="(item, key) in topicsData" :key="key">
               <div>
@@ -49,7 +49,7 @@
           <a href="">more</a>
         </div>
         <div class="right">
-          <h3>{{locate.topicPageRelatedTopicEntry}}</h3>
+          <h3>{{locale.topicPageRelatedTopicEntry}}</h3>
           <ul>
             <li v-for="(item, key) in relatedEntryData" :key="key">
               {{item.name}}
@@ -62,7 +62,7 @@
 
     <footer>
       <bottom-component
-          :locate="locate"
+          :locale="locale"
           :bottom-data="bottomData"
       />
     </footer>
@@ -86,7 +86,7 @@ export default {
   },
   data() {
     return {
-      locate:this.$locate,
+      locale:this.$locale,
       bottomData: {
         first: {
           left: {

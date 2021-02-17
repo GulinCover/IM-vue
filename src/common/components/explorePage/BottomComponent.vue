@@ -5,10 +5,10 @@
         <h2>{{ bottomData.first.left.name }}</h2>
         <h3>{{ bottomData.first.left.h3 }}</h3>
         <p>{{ bottomData.first.left.p }}</p>
-        <a target="_blank" :href="bottomData.first.left.url">{{ locate.subscribe }}</a>
+        <a target="_blank" :href="bottomData.first.left.url">{{ locale.subscribe }}</a>
       </div>
 
-      <ul v-for="(item,key) in locate.bottomList" :key="key">
+      <ul v-for="(item,key) in locale.bottomList" :key="key">
         <li v-for="(el, k) in item" :key="k">
           <a :href="el.url">{{ el.name }}</a>
         </li>
@@ -42,7 +42,7 @@ export default {
   },
   props: [
     "bottomData",
-    "locate",
+    "locale",
   ],
 }
 </script>

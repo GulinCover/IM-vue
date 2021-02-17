@@ -2,7 +2,7 @@
   <div class="index-right-component">
     <div class="index-right-content">
       <div class="title">
-        <h3>{{locate.indexPageRightTitle}}</h3>
+        <h3>{{locale.indexPageRightTitle}}</h3>
       </div>
       <ul>
         <li v-for="(item, key) in historyInfos" :key="key">
@@ -19,7 +19,7 @@
           </div>
         </li>
       </ul>
-      <a :href="showMore">{{locate.showMore}}</a>
+      <a :href="showMore">{{locale.showMore}}</a>
     </div>
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      locate: this.$locate,
+      locale: this.$locale,
       showMore: "",
       historyInfos: [
         {

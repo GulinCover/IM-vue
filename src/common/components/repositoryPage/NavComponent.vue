@@ -3,7 +3,7 @@
     <div class="nav">
       <div></div>
       <div v-for="(item, key) in nav" :key="key" :ref="item.alias">
-        <a @click="jump(item.url)">{{item.name}}</a>
+        <a @click="jump(item.url)">{{ item.name }}</a>
       </div>
     </div>
   </div>
@@ -14,26 +14,52 @@ export default {
   name: "NavComponent",
   props: [
     "nav",
+    "headerBounding",
+      "height"
   ],
   methods: {
     navFix() {
       let nav = document.querySelector(".nav-wrapper")
-      let header = document.querySelector("header").getBoundingClientRect()
-      const h = header.top + header.height
-      if (h <= 0) {
-        nav.style.top = `${window.scrollY - header.height}px`
-      } else {
-        nav.style.top = '0'
+
+      try {
+        if (this.headerBounding instanceof Object) {
+          let header = this.headerBounding
+          const h = header.top + header.height
+          if (h <= 0) {
+            nav.style.top = `${window.scrollY - this.height}px`
+          } else {
+            nav.style.top = '0'
+          }
+
+        } else {
+          let header = document.querySelector("header").getBoundingClientRect()
+          const h = header.top + header.height
+          if (h <= 0) {
+            nav.style.top = `${window.scrollY - header.height}px`
+          } else {
+            nav.style.top = '0'
+          }
+        }
+      } catch (e) {
+        console.log(e)
       }
     },
 
+    fresh() {
+      window.scrollTo({
+        top:0,
+      })
+      console.log(123)
+    },
+
     jump(web) {
-      // if (web===`/${this.$route.name}`) return
-      // this.$router.push(web)
-      console.log(web)
+      if (web===this.$route.query.current) return
+      window.open(`${this.$route.name}?current=${web}`,"_self")
     }
   },
   mounted() {
+
+    window.addEventListener("beforeunload", this.fresh)
     window.addEventListener("scroll", this.navFix)
     let eles = document.querySelectorAll(".nav div")
     eles.forEach(item => item.classList.remove("is-active"))
@@ -43,7 +69,6 @@ export default {
       eles[1].classList.add("is-active")
       return
     }
-
 
     for (let item of this.nav) {
       if (item.alias === current) {

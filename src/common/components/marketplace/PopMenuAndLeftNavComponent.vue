@@ -111,7 +111,7 @@ export default {
   },
   data() {
     return {
-      locale: this.$locate,
+      locale: this.$locale,
       isPopMenuActive: false,
     }
   },
@@ -122,7 +122,11 @@ export default {
       //   element.style.top = `${window.scrollY}px`
       // }
       let element = document.querySelector(".pop-menu-wrapper")
-      element.style.top = `${window.scrollY}px`
+      try {
+        element.style.top = `${window.scrollY}px`
+      } catch (e) {
+        console.log(e)
+      }
     },
 
     activePopMenu() {

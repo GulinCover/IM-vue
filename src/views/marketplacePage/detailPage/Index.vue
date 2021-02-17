@@ -56,7 +56,7 @@
                 <p>uuid</p>
               </div>
               <div>
-                <h3>￥12c</h3>
+                <h3>MAX￥12c</h3>
                 <p>2021/02/12 12:22</p>
               </div>
             </li>
@@ -66,51 +66,7 @@
                 <p>uuid</p>
               </div>
               <div>
-                <h3>￥12c</h3>
-                <p>2021/02/12 12:22</p>
-              </div>
-            </li>
-            <li>
-              <div>
-                <h3>Alex</h3>
-                <p>uuid</p>
-
-              </div>
-              <div>
-                <h3>￥12c</h3>
-                <p>2021/02/12 12:22</p>
-              </div>
-            </li>
-            <li>
-              <div>
-                <h3>Alex</h3>
-                <p>uuid</p>
-
-              </div>
-              <div>
-                <h3>￥12c</h3>
-                <p>2021/02/12 12:22</p>
-              </div>
-            </li>
-            <li>
-              <div>
-                <h3>Alex</h3>
-                <p>uuid</p>
-
-              </div>
-              <div>
-                <h3>￥12c</h3>
-                <p>2021/02/12 12:22</p>
-              </div>
-            </li>
-            <li>
-              <div>
-                <h3>Alex</h3>
-                <p>uuid</p>
-
-              </div>
-              <div>
-                <h3>￥12c</h3>
+                <h3>START￥12c</h3>
                 <p>2021/02/12 12:22</p>
               </div>
             </li>
@@ -167,7 +123,7 @@ export default {
   },
   data() {
     return {
-      locale:this.$locate,
+      locale:this.$locale,
       inputPrice: "",
     }
   }
@@ -329,7 +285,6 @@ main {
         width: 100%;
 
         .left {
-
           width: 100%;
           text-align: start;
 
@@ -380,10 +335,11 @@ main {
   background: $index-page-main-background-color-grey;
 
   .bidding {
+    max-width: 1012px;
+    margin: 0 auto;
+
     @media screen and (min-width:$middle) {
       width: 100%;
-      margin: 0 8.5px;
-      padding: 0 16px;
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
@@ -399,8 +355,6 @@ main {
 
         ul {
           max-height: 360px;
-          overflow: scroll;
-          overflow-x: hidden;
 
           li {
             padding: 16px;
@@ -414,6 +368,12 @@ main {
 
               p {
                 font-size: 12px;
+              }
+
+              &:last-child {
+                p {
+                  text-align: end;
+                }
               }
             }
 
@@ -523,7 +483,6 @@ main {
     }
 
     @media screen and (max-width: $middle) {
-      margin: 0 8.5px;
       padding: 0 16px;
       width: 100%;
       display: flex;
@@ -541,8 +500,6 @@ main {
 
         ul {
           max-height: 360px;
-          overflow: scroll;
-          overflow-x: hidden;
 
           li {
             padding: 16px;
@@ -556,6 +513,13 @@ main {
 
               p {
                 font-size: 12px;
+                text-align: end;
+              }
+
+              &:last-child {
+                p {
+                  text-align: end;
+                }
               }
             }
 

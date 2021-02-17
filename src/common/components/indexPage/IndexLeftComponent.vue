@@ -3,14 +3,14 @@
     <div class="index-left-content">
       <div class="speak-show">
         <div class="lookup">
-          <div>{{locate.topic}}</div>
+          <div>{{locale.topic}}</div>
           <a href="">
             <book-icon :size="'14'"/>
             New
           </a>
         </div>
         <div class="search" :class="{'is-active':isActive}">
-          <input @focus="focusIn" @focusout="focusOut" type="text" :placeholder="locate.indexPageLeftSearchPlaceholder">
+          <input @focus="focusIn" @focusout="focusOut" type="text" :placeholder="locale.indexPageLeftSearchPlaceholder">
         </div>
         <div class="show">
           <ul>
@@ -30,12 +30,12 @@
       </div>
       <div class="apply-certification">
         <div class="title">
-          {{locate.indexPageLeftTitle}}
+          {{locale.indexPageLeftTitle}}
         </div>
         <div class="desc">
-          {{locate.indexPageLeftDesc}}
+          {{locale.indexPageLeftDesc}}
         </div>
-        <a href="">{{locate.certification}}</a>
+        <a href="">{{locale.certification}}</a>
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@ export default {
   },
   data() {
     return {
-      locate: this.$locate,
+      locale: this.$locale,
       isActive: false,
       topicInfos: [
         {

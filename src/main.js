@@ -6,10 +6,10 @@ import data from "@/locale/zh_CN.json"
 
 Vue.config.productionTip = false
 Vue.prototype.$isCN = true
-Vue.prototype.$locate = data
+Vue.prototype.$locale = data
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount('#app')

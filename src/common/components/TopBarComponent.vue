@@ -96,7 +96,7 @@ export default {
     return {
       indexPath: "https://github.com/gulincover",
       icons: icons,
-      locale: this.$locate,
+      locale: this.$locale,
       isMobileMenuActive: false,
       isSearchActive: false,
 

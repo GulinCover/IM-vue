@@ -6,7 +6,7 @@
 
     <main>
       <nav-component
-          :locate="locale"
+          :locale="locale"
           :path-name="this.$route.name"
       />
 
@@ -21,7 +21,7 @@
 
     <footer>
       <bottom-component
-          :locate="locale"
+          :locale="locale"
           :bottom-data="bottomData"
       />
     </footer>
@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      locale:this.$locate,
+      locale:this.$locale,
       bottomData: {
         first: {
           left: {

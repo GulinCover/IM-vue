@@ -6,7 +6,7 @@
 
     <main>
       <nav-component
-          :locate="locate"
+          :locale="locale"
           :path-name="pathName"
       />
 
@@ -32,7 +32,7 @@
         </div>
 
         <div class="middle">
-          <h2>{{ locate.exploreTitle }}</h2>
+          <h2>{{ locale.exploreTitle }}</h2>
 
           <div class="content">
             <div class="card-wrapper">
@@ -67,7 +67,7 @@
                 </li>
               </ul>
               <div class="more">
-                <a :href="hotTopicData.more">{{ locate.moreHotTopic }}</a>
+                <a :href="hotTopicData.more">{{ locale.moreHotTopic }}</a>
               </div>
             </div>
 
@@ -99,7 +99,7 @@
                 </li>
               </ul>
               <div class="more">
-                <a :href="hotTopicData.more">{{ locate.moreHotTopic }}</a>
+                <a :href="hotTopicData.more">{{ locale.moreHotTopic }}</a>
               </div>
             </div>
 
@@ -117,7 +117,7 @@
                     </li>
                   </ul>
                   <div class="more">
-                    <a :href="officialData.more">{{ locate.moreTopic }}</a>
+                    <a :href="officialData.more">{{ locale.moreTopic }}</a>
                     <chevron-right-icon :size="'16'"/>
                   </div>
                 </div>
@@ -166,7 +166,7 @@
               </li>
             </ul>
             <a href="">
-              <p>{{ locate.moreHotTopic }}</p>
+              <p>{{ locale.moreHotTopic }}</p>
               <chevron-right-icon :size="'18'"/>
             </a>
           </div>
@@ -196,7 +196,7 @@
               </li>
             </ul>
             <a href="">
-              <p>{{ locate.moreHotTopic }}</p>
+              <p>{{ locale.moreHotTopic }}</p>
               <chevron-right-icon :size="'18'"/>
             </a>
           </div>
@@ -208,7 +208,7 @@
     <footer>
       <bottom-component
           :bottom-data="bottomData"
-          :locate="locate"
+          :locale="locale"
       />
     </footer>
 
@@ -233,7 +233,7 @@ export default {
   },
   data() {
     return {
-      locate: this.$locate,
+      locale: this.$locale,
       pathName: this.$route.name,
 
       userData: {
@@ -475,7 +475,6 @@ export default {
 
   },
   mounted() {
-
   },
 }
 </script>

@@ -5,9 +5,26 @@
     </header>
 
     <main>
+      <div class="user-info-wrapper">
+        <div class="first">
+          <div class="avatar"></div>
+          <div class="desc">
+            <h3>Alex</h3>
+            <p>Alex</p>
+          </div>
+        </div>
+        <div class="two">
+          <p>this is a user desc</p>
+        </div>
+        <div class="three">{{ locale.profileEditor }}</div>
+      </div>
+
       <div class="nav-bar">
+        <div class="placeholder"></div>
         <nav-component
             :nav="locale.repositoryPageNav"
+            :header-bounding="headerBounding"
+            :height="height"
         />
       </div>
 
@@ -26,150 +43,59 @@
         </div>
 
         <div class="right">
-          <div class="public-topic-card">
-            <h3>发布过的著述</h3>
-            <ul>
-              <li>
-                <h3>hello</h3>
-                <p>this is a topic desc</p>
-                <div>
-                  <p>3D</p>
-                  <p>2021/02/12 12:10</p>
-                </div>
-              </li>
-              <li>
-                <h3>hello</h3>
-                <p>this is a topic desc</p>
-                <div>
-                  <p>3D</p>
-                  <p>2021/02/12 12:10</p>
-                </div>
-              </li>
-              <li>
-                <h3>hello</h3>
-                <p>this is a topic desc</p>
-                <div>
-                  <p>3D</p>
-                  <p>2021/02/12 12:10</p>
-                </div>
-              </li>
-            </ul>
-            <a>more</a>
+          <div v-if="locale.repositoryPageNav[1].alias === this.pathName">
+            <public-topic-component
+                :locale="locale"
+            />
           </div>
-
-          <div class="public-comment-card">
-            <div>
-              <h3>1月2021</h3>
-              <div></div>
-            </div>
-            <ul>
-              <li>
-                <div></div>
-                <div>
-                  <h3>this is a topic title</h3>
-                  <ul>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <div></div>
-                <div>
-                  <h3>this is a topic title</h3>
-                  <ul>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <div></div>
-                <div>
-                  <h3>this is a topic title</h3>
-                  <ul>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <div></div>
-                <div>
-                  <h3>this is a topic title</h3>
-                  <ul>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                    <li>
-                      <p>this is a comment</p>
-                      <p>2021/03/02 12:11</p>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            </ul>
+          <div v-else-if="locale.repositoryPageNav[2].alias === this.pathName">
+            <public-comment-component
+                :locale="locale"
+            />
+          </div>
+          <div v-else-if="locale.repositoryPageNav[3].alias === this.pathName">
+            <wallet-component
+                :locale="locale"
+            />
+          </div>
+          <div v-else-if="locale.repositoryPageNav[4].alias === this.pathName">
+            <selling-component
+              :locale="locale"
+              />
+          </div>
+          <div v-else-if="locale.repositoryPageNav[5].alias === this.pathName">
+            <photographed-component
+              :locale="locale"
+              />
+          </div>
+          <div v-else-if="locale.repositoryPageNav[6].alias === this.pathName">
+            <failed-component
+              :locale="locale"
+              />
+          </div>
+          <div v-else-if="locale.repositoryPageNav[7].alias === this.pathName">
+            <bidding-component
+              :locale="locale"
+              />
+          </div>
+          <div v-else-if="locale.repositoryPageNav[8].alias === this.pathName">
+            <repository-component
+                :locale="locale"
+            />
+          </div>
+          <div v-else>
+            <overview-component/>
           </div>
 
         </div>
       </div>
 
-      <div style="height: 100vh"></div>
     </main>
 
     <footer>
-      <bottom-component/>
+      <bottom-component
+          :backgroundColor="'#fff'"
+      />
     </footer>
   </div>
 </template>
@@ -178,20 +104,59 @@
 import TopBar from "@/common/components/TopBarComponent";
 import BottomComponent from "@/common/components/marketplace/BottomComponent";
 import NavComponent from "@/common/components/repositoryPage/NavComponent";
+import PublicTopicComponent from "@/common/components/repositoryPage/PublicTopicComponent"
 import {MapPinIcon} from "vue-feather-icons"
+import OverviewComponent from "@/common/components/repositoryPage/OverviewComponent";
+import PublicCommentComponent from "@/common/components/repositoryPage/PublicCommentComponent";
+import WalletComponent from "@/common/components/repositoryPage/WalletComponent";
+import SellingComponent from "@/common/components/repositoryPage/SellingComponent";
+import PhotographedComponent from "@/common/components/repositoryPage/PhotographedComponent";
+import FailedComponent from "@/common/components/repositoryPage/FailedComponent";
+import BiddingComponent from "@/common/components/repositoryPage/BiddingComponent";
+import RepositoryComponent from "@/common/components/repositoryPage/RepositoryComponent";
 
 export default {
   name: "Index",
   components: {
+    RepositoryComponent,
+    FailedComponent,
+    PhotographedComponent,
+    OverviewComponent,
     NavComponent,
     BottomComponent,
     TopBar,
     MapPinIcon,
+    PublicTopicComponent,
+    PublicCommentComponent,
+    WalletComponent,
+    SellingComponent,
+    BiddingComponent,
   },
   data() {
     return {
-      locale: this.$locate
+      locale: this.$locale,
+      headerBounding: null,
+      height: null,
+
+      pathName: "overview"
     }
+  },
+
+  methods: {
+    fix() {
+      if (window.innerWidth <= 767) {
+        this.headerBounding = document.querySelector(".placeholder").getBoundingClientRect()
+      }
+    }
+  },
+  mounted() {
+    this.height = document.querySelector(".placeholder").getBoundingClientRect().top
+    window.addEventListener("scroll", this.fix)
+
+    if (this.$route.query.current !== null ||
+        this.$route.query.current !== ""
+    ) this.pathName = this.$route.query.current
+
   }
 }
 </script>
@@ -201,6 +166,59 @@ export default {
 
 main {
   width: 100%;
+  margin-bottom: 40px;
+
+  @media screen and (min-width: $middle) {
+    .user-info-wrapper {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: $middle) {
+    .user-info-wrapper {
+      padding: 0 24px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      .first {
+        width: 100%;
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .avatar {
+          margin-right: 16px;
+          flex: 1;
+          background: #4f86bf;
+          height: 16vw;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+
+        .desc {
+          text-align: start;
+          flex: 5;
+        }
+      }
+
+      .two {
+        margin-bottom: 16px;
+      }
+
+      .three {
+        width: 100%;
+        padding: 5px 16px;
+        margin-bottom: 16px;
+        border-radius: 6px;
+        border: 1px solid $index-page-main-border-color-grey;
+        background: $index-page-main-background-color-grey;
+      }
+    }
+  }
 
   > .nav-bar {
   }
@@ -209,177 +227,77 @@ main {
     width: 100%;
     padding: 0 24px;
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    max-width: 1012px;
     margin: 0 auto;
 
-    .left {
-      margin-top: -32px;
-      padding: 8px;
-      width: 22%;
-      z-index: 99;
-      text-align: start;
+    @media screen and (min-width: $middle) {
+      justify-content: flex-start;
+      align-items: flex-start;
+      max-width: 1012px;
 
-      .avatar {
-        width: 100%;
-        height: 0;
-        padding-bottom: 100%;
-        background: #4e4ed9;
-        border-radius: 50%;
-      }
+      .left {
+        margin-top: -32px;
+        padding: 8px;
+        width: 22%;
+        z-index: 99;
+        text-align: start;
 
-      h3 {
-        padding-top: 16px;
-      }
-
-      p {
-        padding-bottom: 16px;
-      }
-
-      .profile-button {
-        margin-bottom: 16px;
-        border-radius: 6px;
-        border: 1px solid $index-page-main-border-color-grey;
-        padding: 5px 16px;
-        text-align: center;
-      }
-
-    }
-
-    .right {
-      width: 78%;
-      padding: 0 8px;
-      text-align: start;
-
-      .public-topic-card {
-        width: 100%;
-        margin-top: 24px;
-
-        > h3 {
-          margin-bottom: 8px;
-          padding-left: 8px;
-        }
-
-        > ul {
+        .avatar {
           width: 100%;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-
-          li {
-            margin: 0 8px 16px;
-            padding: 16px;
-            border-radius: 6px;
-            border: 1px solid $index-page-main-border-color-grey;
-            font-size: 12px;
-
-            > h3 {
-              font-size: 16px;
-            }
-
-            > p {
-              margin: 8px 0 16px;
-            }
-
-            > div {
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-
-              > p {
-                margin-right: 16px;
-              }
-            }
-
-          }
+          height: 0;
+          padding-bottom: 100%;
+          background: #4e4ed9;
+          border-radius: 50%;
         }
 
-        > a {
-          margin-left: 8px;
+        h3 {
+          padding-top: 16px;
         }
+
+        p {
+          padding-bottom: 16px;
+        }
+
+        .profile-button {
+          margin-bottom: 16px;
+          border-radius: 6px;
+          border: 1px solid $index-page-main-border-color-grey;
+          padding: 5px 16px;
+          text-align: center;
+        }
+
       }
 
-      .public-comment-card {
-        margin-top: 40px;
+      .right {
+        width: 78%;
+        padding: 0 16px;
+        text-align: start;
+
+      }
+
+    }
+
+    @media screen and (max-width: $middle) {
+      padding: 0 16px;
+
+      .left {
+        display: none;
+      }
+
+      .right {
         width: 100%;
+        text-align: start;
 
-        > div {
-          width: inherit;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 8px;
 
-          h3 {
-            width: 15%;
-            min-width: 64px;
-            padding: 0 16px 0 8px;
-            font-size: 12px;
-          }
-
-          > div {
-            height: 1px;
-            width: 85%;
-            background: $index-page-main-background-color-grey-5;
-          }
-        }
-
-        > ul {
-          margin-left: 16px;
-          padding: 16px 0;
-          position: relative;
-
-          &:before {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            display: block;
-            width: 2px;
-            content: "";
-            background-color: $index-page-main-background-color-grey-5;
-          }
-
-          li {
-            padding-bottom: 16px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-
-            > div:first-child {
-              border: 3px solid white;
-              margin: 0 8px 0 -15px;
-              width: 32px;
-              height: 32px;
-              background: $index-page-main-background-color-grey-3;
-              border-radius: 50%;
-              z-index: 2;
-            }
-
-            > div:last-child {
-              width: 100%;
-
-              ul {
-                li {
-                  padding: 4px 0;
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: flex-start;
-                  align-items: flex-start;
-                  font-size: 14px;
-                  line-height: 1.5;
-
-                  p:last-child {
-                    color: $index-page-main-font-color-grey-3;
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
+
   }
+}
+
+footer {
+  margin: 0 auto;
+  max-width: 1012px;
+  border-top: 1px solid $index-page-main-border-color-grey;
 }
 
 </style>

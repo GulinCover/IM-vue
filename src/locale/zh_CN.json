@@ -2,7 +2,7 @@
   "browserTip": "请更换成谷歌浏览器或谷歌内核的浏览器,在其它浏览器上可能会出现不适配或错误的情况,以至于影响您的体验.为了更好的体验,建议更换成谷歌浏览器或谷歌内核的浏览器,谢谢.",
   "topBarMarketplace": "市场",
   "topBarExplore": "发现",
-  "topBarIssues": "争议",
+  "topBarIssues": "议论",
   "topBarSearchPlaceholder": "搜索跳转到...",
   "indexPageExploreButton": "发现更多",
   "indexPageH2": "发现有趣的人和事来提升自己,警醒自己.",
@@ -168,45 +168,147 @@
     {
       "alias": "overview",
       "name": "预览",
-      "url": ""
+      "url": "overview"
     },
     {
       "alias": "public",
       "name": "发布的著述",
-      "url": ""
+      "url": "public"
     },
     {
       "alias": "comment",
       "name": "发表的回复",
-      "url": ""
+      "url": "comment"
     },
     {
       "alias": "wallet",
       "name": "钱包",
-      "url": ""
+      "url": "wallet"
     },
     {
       "alias": "selling",
       "name": "正在售卖",
-      "url": ""
+      "url": "selling"
     },
     {
       "alias": "success",
       "name": "已拍下",
-      "url": ""
+      "url": "success"
     },
     {
       "alias": "failed",
       "name": "竞价失败",
-      "url": ""
+      "url": "failed"
     },
     {
       "alias": "biding",
       "name": "正在竞价",
-      "url": ""
+      "url": "biding"
+    },
+    {
+      "alias": "repository",
+      "name": "仓库",
+      "url": "repository"
     }
   ],
-  "profileEditor": "编辑"
+  "profileEditor": "编辑",
+  "publicTopicPageSearchPlaceholder": "查询...",
+
+
+
+
+  "userManagerAccountSettings": "账户设置",
+  "userManagerAccountSettingsNav": [
+    {
+      "name": "常规",
+      "url": "profile"
+    },
+    {
+      "name": "安全",
+      "url": "security"
+    },
+    {
+      "name": "支付&账单",
+      "url": "bill"
+    },
+    {
+      "name": "通知",
+      "url": "notify"
+    },
+    {
+      "name": "仓库",
+      "url": "repository"
+    }
+  ],
+  "editPicture": "编辑头像",
+  "sessions": "登陆信息",
+  "nicknameDesc": "您的名字可能出现在您贡献或被提及的著述附近.您可以在必要时将其删除.",
+  "descDesc": "这是对外展示您个性的简介,您也可以@提及其他用户或组织以链接到他们.",
+  "locationDesc": "此页面上的所有字段都是可选的,必要时可以删除.通过填写这些字段,即表示您同意我们同意在您的用户个人资料出现的任何位置共享此数据,请参阅我们的隐私声明，以了解有关我们如何使用此信息的更多信息.",
+
+
+
+  "oldPwd": "旧密码",
+  "newPwd": "新密码",
+  "confirmPwd": "确认新密码",
+  "updatePwd": "验证密码",
+  "forgotPwd": "忘记密码?",
+  "pwdDesc": "请确保至多20个字符或至少8个字符(包括数字和小写字母).",
+  "oldEmail": "旧邮箱",
+  "newEmail": "新邮箱",
+  "confirmEmail": "确认新邮箱",
+  "updateEmail": "验证邮箱",
+  "emailDesc": "请确保邮箱正确.",
+  "oldPhone": "旧号码",
+  "newPhone": "新号码",
+  "confirmPhone": "确认新号码",
+  "updatePhone": "验证号码",
+  "phoneDesc": "请确保手机号码正确.",
+  "loginInfoDesc": "这是已登录到您的帐户的设备列表.您将可以撤销所有您不认识的Sessions.",
+
+
+
+  "topicPublicPageNav": [
+    {
+      "name": "内容",
+      "url": "public"
+    },
+    {
+      "name": "评论",
+      "url": "comment"
+    },
+    {
+      "name": "议论",
+      "url": "talk"
+    },
+    {
+      "name": "分支",
+      "url": "branch"
+    },
+    {
+      "name": "贡献者",
+      "url": "contributor"
+    },
+    {
+      "name": "管理者",
+      "url": "manager"
+    }
+  ],
+  "topicPublicPageRightAbout": "关于",
+  "topicPublicPageRightTable": "目录",
+  "topicPublicPageRightUsers": "管理者",
+  "topicPublicPageRightEntryRate": "占有率",
+
+
+
+
+  "topicCommentPageH4": "想说出此时此刻关于当前著述的真实想法吗?",
+  "topicCommentPageP": "如果您有异议或想法,可以打开议论页,和大家一起讨论,参与其中,获取您所想要的结果.",
+  "proTip": "小提示!此处找不到的答案,可能在<a>议论</a>里会有所收获.",
+  "topicTalkPageH4": "不赞同他人评论或著述存有争议?",
+  "topicTalkPageP": "在这里可以尽情的讨论,畅所欲言.大胆的指出著述内容不合理的地方,或与他人交流自己的想法,共同讨论出大家都赞成的结果.",
+  "proTipTalk": "提示!此页的所有操作都是有银币奖罚的.请参照<a>协议</a>."
+
 }
 
 

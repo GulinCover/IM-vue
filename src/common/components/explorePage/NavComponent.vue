@@ -3,16 +3,16 @@
     <div class="nav">
       <div></div>
       <div class="explore" ref="explore">
-        <a @click="jump('/explore')">{{ locate.explore }}</a>
+        <a @click="jump('/explore')">{{ locale.explore }}</a>
       </div>
       <div class="topic" ref="topic">
-        <a @click="jump('/topic')">{{ locate.topic }}</a>
+        <a @click="jump('/topic')">{{ locale.topic }}</a>
       </div>
       <div class="hot" ref="hot">
-        <a @click="jump('/hot')">{{ locate.hot }}</a>
+        <a @click="jump('/hot')">{{ locale.hot }}</a>
       </div>
       <div class="policy" ref="policy">
-        <a @click="jump('/policy')">{{ locate.policy }}</a>
+        <a @click="jump('/policy')">{{ locale.policy }}</a>
       </div>
       <div>
         <a>申请词条</a>
@@ -25,7 +25,7 @@
 export default {
   name: "NavComponent",
   props: [
-      "locate",
+      "locale",
       "pathName"
   ],
   methods: {
@@ -33,10 +33,15 @@ export default {
       let nav = document.querySelector(".nav-wrapper")
       let header = document.querySelector("header").getBoundingClientRect()
       const h = header.top + header.height
-      if (h <= 0) {
-        nav.style.top = `${window.scrollY - header.height}px`
-      } else {
-        nav.style.top = '0'
+
+      try {
+        if (h <= 0) {
+          nav.style.top = `${window.scrollY - header.height}px`
+        } else {
+          nav.style.top = '0'
+        }
+      } catch (e) {
+        console.log(e)
       }
     },
 
