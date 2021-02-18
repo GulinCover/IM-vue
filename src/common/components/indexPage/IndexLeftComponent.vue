@@ -4,7 +4,7 @@
       <div class="speak-show">
         <div class="lookup">
           <div>{{locale.topic}}</div>
-          <a href="">
+          <a href="/create/topic" target="_blank">
             <book-icon :size="'14'"/>
             New
           </a>
@@ -14,15 +14,12 @@
         </div>
         <div class="show">
           <ul>
-            <li v-for="(item, key) in topicInfos" :key="key">
-              <a :href="item.url">
-                <div v-if="item.type === '1'">
+            <li v-for="(item, key) in topicsData" :key="key">
+              <a :href="`/topic/public/${item.topicId}`">
+                <div>
                   <book-open-icon :size="'16'"/>
                 </div>
-                <div class="private" v-else>
-                  <lock-icon :size="'16'"/>
-                </div>
-                <p>{{item.content}}</p>
+                <p>{{item.topicTitle}}</p>
               </a>
             </li>
           </ul>
@@ -42,61 +39,25 @@
 </template>
 
 <script>
-import {BookIcon, BookOpenIcon, LockIcon} from "vue-feather-icons"
+import {BookIcon, BookOpenIcon,} from "vue-feather-icons"
 
 export default {
   name: "IndexLeftComponent",
   components: {
-    BookIcon,
-    BookOpenIcon,
-    LockIcon
+    BookIcon, BookOpenIcon,
   },
+  props: [
+      "topicsData"
+  ],
   data() {
     return {
       locale: this.$locale,
       isActive: false,
-      topicInfos: [
-        {
-          id: '1',
-          url: '',
-          content: 'testdsadsadsadsadsfasfsafsas',
-          type: '1'
-        },
-        {
-          id: '2',
-          url: '',
-          content: 'test2',
-          type: '0'
-        },
-        {
-          id: '1',
-          url: '',
-          content: 'test',
-          type: '1'
-        },
-        {
-          id: '2',
-          url: '',
-          content: 'test2',
-          type: '0'
-        },
-        {
-          id: '1',
-          url: '',
-          content: 'test',
-          type: '1'
-        },
-        {
-          id: '2',
-          url: '',
-          content: 'test2',
-          type: '0'
-        }
-      ],
     }
   },
   methods: {
     focusIn() {
+      console.log(this.topicsData)
       this.isActive = true
     },
     focusOut() {

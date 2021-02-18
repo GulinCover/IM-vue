@@ -6,15 +6,15 @@
       </div>
       <ul>
         <li v-for="(item, key) in historyInfos" :key="key">
-          <a :href="item.url">{{item.name}}</a>
-          <p>{{item.desc}}</p>
+          <a :href="`/topic/public/${item.topicId}`">{{item.topicTitle}}</a>
+          <p>{{item.topicDesc}}</p>
           <div>
-            <span v-for="(el, k) in item.entries" :key="k">
+            <span v-for="(el, k) in item.entryDataList" :key="k">
               {{el.name}}
             </span>
             <span>
               <star-icon :size="'14'"/>
-              {{item.starNumber}}
+              {{item.likeNumber}}
             </span>
           </div>
         </li>
@@ -26,6 +26,7 @@
 
 <script>
 import {StarIcon} from "vue-feather-icons"
+import {HttpPost} from "@/http/indexPage";
 
 export default {
   name: "IndexRightComponent",
@@ -35,7 +36,7 @@ export default {
   data() {
     return {
       locale: this.$locale,
-      showMore: "",
+      showMore: "/topic",
       historyInfos: [
         {
           id: '1',
@@ -124,6 +125,24 @@ export default {
         },
       ],
     }
+  },
+  methods:{
+    dataInit() {
+      HttpPost("/api/post/select/me/browseHistory/topics").then(ret=>{
+        let lst = ret.data.code.split(" ")
+        if (lst[0] !== "200") {
+          alert(lst[1])
+          return
+        }
+
+        this.historyInfos = ret.data.browseHistoryAbsList
+      }).catch(e=>{
+        console.log(e)
+      })
+    }
+  },
+  mounted() {
+    this.dataInit()
   }
 }
 </script>

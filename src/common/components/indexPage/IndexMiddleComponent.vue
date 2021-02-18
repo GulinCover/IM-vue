@@ -14,7 +14,7 @@
           </div>
           <div>
             <send-icon :size="'16'"/>
-            <a v-html="locale.indexPageTip2"></a>
+            <a :href="exploreLink" v-html="locale.indexPageTip2"></a>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@ export default {
   },
   data() {
     return {
-      indexPath: "https://github.com",
+      indexPath: "https://github.com/gulincover",
       icons: icons,
       locale: this.$locale,
       exploreLink: "/explore",

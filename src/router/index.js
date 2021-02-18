@@ -83,6 +83,11 @@ const routes = [
         path: "/topic/manager/:id",
         name: "topicManager",
         component: ()=>import("@/views/topicPublicPage/managerPage/Index")
+    },
+    {
+        path: "/create/topic",
+        name: "createTopic",
+        component: ()=>import("@/views/createPage/topicPage/Index")
     }
 ]
 

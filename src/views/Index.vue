@@ -14,7 +14,9 @@
     <main>
       <div class="main-wrapper">
         <div class="left" ref="content">
-          <index-left-component/>
+          <index-left-component
+              :topics-data="topicsData"
+          />
         </div>
         <div class="middle" ref="middle">
           <index-middle-component/>
@@ -34,13 +36,15 @@ import IndexLeftComponent from "@/common/components/indexPage/IndexLeftComponent
 import IndexRightComponent from "@/common/components/indexPage/IndexRightComponent";
 import IndexMiddleComponent from "@/common/components/indexPage/IndexMiddleComponent";
 import {XCircleIcon} from "vue-feather-icons"
+import {HttpPost} from "@/http/indexPage";
 
 export default {
   name: 'Home',
   data() {
     return {
       locale: this.$locale,
-      isTipActive: false
+      isTipActive: false,
+      topicsData: [],
     }
   },
   components: {
@@ -54,16 +58,35 @@ export default {
   methods: {
     closeTip() {
       this.isTipActive = false
+    },
+
+    init() {
+      const userAgent = navigator.userAgent
+      if (userAgent.indexOf("Chrome") > -1) {
+        this.isTipActive = false
+        return
+      }
+      this.isTipActive = true
+    },
+
+    daTaInit() {
+      HttpPost("/api/post/select/me/topics").then(ret=>{
+        let lst = ret.data.code.split(" ")
+        if (lst[0] !== "200") {
+          alert(lst[1])
+          return
+        }
+        this.topicsData = ret.data.topicAbsList
+
+      }).catch(e=>{
+        console.log(e)
+      })
     }
   },
 
   mounted() {
-    const userAgent = navigator.userAgent
-    if (userAgent.indexOf("Chrome") > -1) {
-      this.isTipActive = false
-      return
-    }
-    this.isTipActive = true
+    this.init()
+    this.daTaInit()
   },
 }
 </script>

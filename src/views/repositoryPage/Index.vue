@@ -138,24 +138,34 @@ export default {
       headerBounding: null,
       height: null,
 
-      pathName: "overview"
+      pathName: "overview",
     }
   },
 
   methods: {
     fix() {
       if (window.innerWidth <= 767) {
-        this.headerBounding = document.querySelector(".placeholder").getBoundingClientRect()
+        try{
+          this.headerBounding = document.querySelector(".placeholder").getBoundingClientRect()
+        } catch (e) {
+          console.log(e)
+        }
       }
-    }
+    },
+
+    navSwitch() {
+      this.height = document.querySelector(".placeholder").getBoundingClientRect().top
+      window.addEventListener("scroll", this.fix)
+
+      if (this.$route.query.current !== null ||
+          this.$route.query.current !== ""
+      ) this.pathName = this.$route.query.current
+    },
+
+
   },
   mounted() {
-    this.height = document.querySelector(".placeholder").getBoundingClientRect().top
-    window.addEventListener("scroll", this.fix)
-
-    if (this.$route.query.current !== null ||
-        this.$route.query.current !== ""
-    ) this.pathName = this.$route.query.current
+    this.navSwitch()
 
   }
 }

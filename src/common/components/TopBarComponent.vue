@@ -8,7 +8,7 @@
       </div>
 
       <div class="icons">
-        <a :href="indexPath" target="_blank">
+        <a :href="locale.indexPath" target="_blank">
           <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32">
               <use :xlink:href="`${icons}#home`"></use>
@@ -27,12 +27,12 @@
                  :placeholder="locale.topBarSearchPlaceholder">
           <div class="top-bar-search-show" :class="{'is-active':isSearchActive}">
             <ul>
-              <li class="jumpOp" v-for="(item, key) in searchHistory" :key="key" @mouseover="searchRecord">
-                <a :href="item.url">
+              <li @click="jumpTo(item.topicId)" class="jumpOp" v-for="(item, key) in searchHistorysData" :key="key">
+                <a @mouseover="searchRecord">
                   <span>
                     <clipboard-icon :size="'18'"/>
                   </span>
-                  <h3>{{ item.name }}</h3>
+                  <h3>{{ item.topicTitle }}</h3>
                   <span>
                     Jump to
                     <external-link-icon :size="'12'"/>
@@ -42,22 +42,44 @@
             </ul>
           </div>
         </div>
-        <div class="issues is-hover" @click="jump('/issues')">{{ locale.topBarIssues }}</div>
-        <div class="marketplace is-hover" @click="jump('/marketplace')">{{ locale.topBarMarketplace }}</div>
-        <div class="explore is-hover" @click="jump('/explore')">{{ locale.topBarExplore }}</div>
+        <div class="issues is-hover" @click="linkTo('/repository')">{{ locale.topBarRepository }}</div>
+        <div class="marketplace is-hover" @click="linkTo('/marketplace')">{{ locale.topBarMarketplace }}</div>
+        <div class="explore is-hover" @click="linkTo('/explore')">{{ locale.topBarExplore }}</div>
       </div>
 
       <div class="top-bar-notification">
         <div class="top-bar-bell">
           <bell-icon :size="'18'"/>
         </div>
-        <div class="top-bar-plus">
+        <div @click="popShow(0)" class="top-bar-plus">
           <plus-icon :size="'18'"/>
-          <corner-right-down-icon :size="'12'"/>
+          <div class="arrow"></div>
+          <div class="show">
+            <ul>
+              <div></div>
+              <li @click="createData(0)">创建著述</li>
+              <li @click="createData(1)">创建词条</li>
+              <li @click="createData(2)">创建认证</li>
+            </ul>
+          </div>
         </div>
-        <div class="top-bar-avatar">
+        <div @click="popShow(1)" class="top-bar-avatar">
           <user-icon :size="'18'"/>
-          <corner-right-down-icon :size="'12'"/>
+          <div class="arrow"></div>
+          <div class="show">
+            <ul>
+              <div></div>
+              <li>当前登录:Alex</li>
+              <h4></h4>
+              <p>开心的一天dsadas</p>
+              <h4></h4>
+              <li @click="newLinkTo('/user/manager')">您的设置</li>
+              <li @click="newLinkTo('/repository')">您的仓库</li>
+              <h4></h4>
+              <li @click="newLinkTo('/user/manager')">设置</li>
+              <li @click="newLinkTo('/logout')">登出</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -67,12 +89,15 @@
       <div class="search-content">
         <input type="text" :placeholder="locale.topBarSearchPlaceholder">
       </div>
-      <div class="issues">issues</div>
-      <div class="marketplace">marketplace</div>
-      <div class="explore">explore</div>
-      <div class="setting">setting</div>
-      <div class="user">user</div>
-      <div class="logout">logout</div>
+      <div @click="linkTo('/')">主页</div>
+      <div @click="linkTo('/repository')" class="repository">仓库</div>
+      <div @click="linkTo('/marketplace')" class="marketplace">市场</div>
+      <div @click="linkTo('/explore')" class="explore">发现</div>
+      <div @click="linkTo('/user/manager')" class="setting">设置</div>
+      <div @click="linkTo('/logout')" class="logout">
+        <log-out-icon/>
+        <span>登出</span>
+      </div>
     </div>
   </div>
 
@@ -80,17 +105,18 @@
 
 <script>
 import icons from "@/icons/home.svg"
-import {BellIcon, PlusIcon, CornerRightDownIcon, UserIcon, ClipboardIcon, ExternalLinkIcon} from "vue-feather-icons"
+import {LogOutIcon, BellIcon, PlusIcon, UserIcon, ClipboardIcon, ExternalLinkIcon} from "vue-feather-icons"
+import {HttpPost} from "@/http/indexPage";
 
 export default {
   name: "TopBar",
   components: {
     BellIcon,
     PlusIcon,
-    CornerRightDownIcon,
     UserIcon,
     ClipboardIcon,
     ExternalLinkIcon,
+    LogOutIcon,
   },
   data() {
     return {
@@ -99,34 +125,10 @@ export default {
       locale: this.$locale,
       isMobileMenuActive: false,
       isSearchActive: false,
+      isPop: false,
+      isGlobal: false,
 
-      searchHistory: [
-        {
-          id: "1",
-          name: "textdsdasfsfasfasfdsafsa",
-          url: ""
-        },
-        {
-          id: "1",
-          name: "text",
-          url: ""
-        },
-        {
-          id: "1",
-          name: "text",
-          url: ""
-        },
-        {
-          id: "1",
-          name: "text",
-          url: ""
-        },
-        {
-          id: "1",
-          name: "text",
-          url: ""
-        },
-      ]
+      searchHistorysData: [],
     }
   },
 
@@ -151,14 +153,79 @@ export default {
       this.isSearchActive = true
     },
     searchFocusOut() {
-      this.isSearchActive = false
+      setTimeout(() => this.isSearchActive = false, 200)
     },
 
-    jump(web) {
-      if (web===`/${this.$route.name}`) return
+    popShow(index) {
+      this.popHid()
+
+      let eles = document.querySelectorAll(".show")
+      eles[index].classList.add("is-active")
+      this.isPop = true
+      this.isGlobal = false
+    },
+
+    popHid() {
+      document.querySelectorAll(".show").forEach(it => it.classList.remove("is-active"))
+      this.isGlobal = true
+    },
+
+    jumpTo(web) {
+      window.open(`/topic/public/${web}`, "_blank")
+    },
+
+    linkTo(web) {
+      if (this.$route.path === web) return
       this.$router.push(web)
+    },
+
+    newLinkTo(web) {
+      if (this.$route.path === web) return
+      window.open(web, "_blank")
+
+    },
+
+    dataInit() {
+      HttpPost("/api/post/select/me/searchHistory/topics").then(ret => {
+        let res = ret.data.code.split(" ")
+
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+        this.searchHistorysData = ret.data.searchHistories
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+
+    globalClick() {
+      if (this.isGlobal)
+        this.popHid()
+      if (this.isPop)
+        this.isGlobal = true
+    },
+
+    createData(index) {
+      switch (index) {
+        case 0:
+          window.open("/create/topic","_blank")
+          break
+        case 1:
+          console.log(1)
+          break
+        case 2:
+          console.log(2)
+          break
+        default:
+          return;
+      }
     }
   },
+  mounted() {
+    this.dataInit()
+    window.addEventListener("click", this.globalClick)
+  }
 }
 </script>
 
@@ -169,7 +236,7 @@ div.is-hover:hover {
   cursor: pointer;
 }
 
-@media all and (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .top-bar-component {
     padding: 16px 24px;
     height: $top-bar-height;
@@ -313,12 +380,98 @@ div.is-hover:hover {
         justify-content: flex-start;
         align-items: center;
 
-        div {
+        > div {
           display: flex;
           justify-content: center;
           align-items: center;
           height: 30px;
           margin-right: 16px;
+          position: relative;
+
+          .arrow {
+            position: relative;
+            top: 3px;
+            border-style: solid;
+            border-width: 4px;
+            border-color: $index-page-main-background-color-grey transparent transparent;
+            width: 0;
+            height: 0;
+          }
+
+          > .show {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+
+            &.is-active {
+              opacity: 1;
+              visibility: visible;
+              position: absolute;
+              top: 32px;
+              right: 0;
+              z-index: 99;
+              background: white;
+              border: 1px solid $index-page-main-border-color-grey;
+              border-radius: 6px;
+
+              ul {
+                position: relative;
+
+                div {
+                  position: absolute;
+                  top: -16px;
+                  right: 11px;
+                  border-style: solid;
+                  border-width: 6px;
+                  border-color: transparent transparent white;
+                  width: 0;
+                  height: 0;
+                }
+
+                li {
+                  width: 128px;
+                  text-align: start;
+
+                  &:nth-child(2) {
+                    margin-top: 4px;
+                  }
+
+                  &:last-child {
+                    margin-bottom: 4px;
+                  }
+
+                  &:hover {
+                    cursor: pointer;
+                    background: $index-page-main-middle-font-color-blue;
+                    color: white;
+                  }
+
+                  padding: 4px 16px;
+                  color: $index-page-main-font-color-grey-3;
+                }
+
+                h4 {
+                  margin: 4px 0;
+                  border-bottom: 1px solid $index-page-main-border-color-grey;
+                }
+
+                p {
+                  border: 1px solid $index-page-main-border-color-grey;
+                  border-radius: 6px;
+                  width: 98px;
+                  margin: 0 auto;
+                  padding: 3px 12px;
+                  text-align: start;
+                  color: $index-page-main-font-color-grey-3;
+                  font-size: 12px;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  overflow: hidden;
+                }
+              }
+            }
+
+          }
         }
 
         div:last-child {
@@ -421,6 +574,17 @@ div.is-hover:hover {
         width: 100%;
         border-top: 1px solid $top-bar-search-border-color;
         text-align: start;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        svg {
+          margin-right: 4px;
+        }
       }
     }
 

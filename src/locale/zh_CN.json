@@ -1,8 +1,10 @@
 {
+  "indexPath": "https://github.com/gulincover",
   "browserTip": "请更换成谷歌浏览器或谷歌内核的浏览器,在其它浏览器上可能会出现不适配或错误的情况,以至于影响您的体验.为了更好的体验,建议更换成谷歌浏览器或谷歌内核的浏览器,谢谢.",
   "topBarMarketplace": "市场",
   "topBarExplore": "发现",
   "topBarIssues": "议论",
+  "topBarRepository": "仓库",
   "topBarSearchPlaceholder": "搜索跳转到...",
   "indexPageExploreButton": "发现更多",
   "indexPageH2": "发现有趣的人和事来提升自己,警醒自己.",
@@ -11,22 +13,22 @@
     [
       {
         "name": "主页",
-        "url": ""
+        "url": "/"
       },
       {
         "name": "关于",
-        "url": ""
+        "url": "/about"
       },
       {
         "name": "Shop",
-        "url": ""
+        "url": "/marketplace"
       },
       {
         "name": "联系",
-        "url": ""
+        "url": "https://github.com/gulincover"
       },
       {
-        "name": "投诉",
+        "name": "建议",
         "url": ""
       }
 
@@ -42,11 +44,11 @@
       },
       {
         "name": "账户状态",
-        "url": ""
+        "url": "/user/manager"
       },
       {
         "name": "账户安全",
-        "url": ""
+        "url": "/user/manager?current=security"
       }
 
     ],
@@ -56,12 +58,12 @@
         "url": ""
       },
       {
-        "name": "隐私",
-        "url": ""
+        "name": "仓库",
+        "url": "/repository"
       },
       {
         "name": "政策",
-        "url": ""
+        "url": "/policy"
       }
     ]
   ],
@@ -307,7 +309,24 @@
   "proTip": "小提示!此处找不到的答案,可能在<a>议论</a>里会有所收获.",
   "topicTalkPageH4": "不赞同他人评论或著述存有争议?",
   "topicTalkPageP": "在这里可以尽情的讨论,畅所欲言.大胆的指出著述内容不合理的地方,或与他人交流自己的想法,共同讨论出大家都赞成的结果.",
-  "proTipTalk": "提示!此页的所有操作都是有银币奖罚的.请参照<a>协议</a>."
+  "proTipTalk": "提示!此页的所有操作都是有银币奖罚的.请参照<a>协议</a>.",
+
+
+
+
+
+  "createTopicH3": "创建一个新的著述",
+  "createTopicP": "资源库包含所有项目文件,包括增加的记录,也包含他人提交到此著述的所有文件.其中所有权全部归创建者所有.",
+  "owner": "拥有者",
+  "topicName": "著述名称",
+  "topicDesc": "好的著述名称简短而令人难忘.需要灵感吗?<a href='/marketplace' target='_blank'>市场</a>看看他人的著述怎么样?",
+  "description": "描述",
+  "public": "公开",
+  "publicDesc": "互联网上的任何用户都可以看到此著述.您还可以选择让他人和您一起共同管理您的著述.",
+  "entryContent": "著述方向",
+  "entryRelated": "内容相关",
+  "entryDesc": "内容相关",
+  "createTopic": "创建著述"
 
 }
 
