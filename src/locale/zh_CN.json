@@ -324,8 +324,11 @@
   "public": "公开",
   "publicDesc": "互联网上的任何用户都可以看到此著述.您还可以选择让他人和您一起共同管理您的著述.",
   "entryContent": "著述方向",
+  "entryContentDesc": "这个标签将决定您的著述所在的展示范围.",
   "entryRelated": "内容相关",
-  "entryDesc": "内容相关",
+  "entryRelatedDesc": "这个标签将会那些对此感兴趣的用户发现和阅读.",
+  "entryDesc": "您至少得选择5种标签,且每项都得有标签!",
+  "selectEntry": "选择标签",
   "createTopic": "创建著述"
 
 }

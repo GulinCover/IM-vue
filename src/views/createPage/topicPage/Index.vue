@@ -53,9 +53,27 @@
         <div class="entry">
           <ul>
             <li>
-
+              <div class="entry-avatar">#</div>
+              <div class="middle">
+                <h3>{{locale.entryContent}}</h3>
+                <p>{{locale.entryContentDesc}}</p>
+              </div>
+              <div class="select-entry">
+                {{locale.selectEntry}}
+              </div>
+            </li>
+            <li>
+              <div class="entry-avatar">#</div>
+              <div class="middle">
+                <h3>{{locale.entryRelated}}</h3>
+                <p>{{locale.entryRelatedDesc}}</p>
+              </div>
+              <div class="select-entry">
+                {{locale.selectEntry}}
+              </div>
             </li>
             <p>
+              <alert-circle-icon size="14"/>
               {{locale.entryDesc}}
             </p>
           </ul>
@@ -76,13 +94,13 @@
 <script>
 import BottomComponent from "@/common/components/marketplace/BottomComponent";
 import TopBar from "@/common/components/TopBarComponent";
-import {BookIcon} from "vue-feather-icons"
+import {AlertCircleIcon,BookIcon} from "vue-feather-icons"
 export default {
   name: "Index",
   components: {
     TopBar,
     BottomComponent,
-    BookIcon,
+    AlertCircleIcon,BookIcon,
   },
   data() {
     return {
@@ -276,13 +294,68 @@ main {
       ul {
         display: flex;
         justify-content: flex-start;
-        align-items: flex-start;
+        align-items: center;
         flex-direction: column;
 
         li {
+          position: relative;
+          width: 90%;
           display: flex;
           justify-content: flex-start;
           align-items: flex-start;
+          padding: 16px;
+          margin: 4px 32px;
+          border-bottom: 1px solid $index-page-main-border-color-grey;
+
+          .entry-avatar {
+            width: 48px;
+            height: 48px;
+            background-color: $index-page-main-background-color-grey-7;
+            border-radius: 50%;
+            font-size: 28px;
+            text-align: center;
+            line-height: 48px;
+            margin-right: 16px;
+          }
+
+          .middle {
+            h3 {
+              margin-bottom: 4px;
+              font-size: 16px;
+            }
+
+            p {
+              font-size: 12px;
+            }
+          }
+
+          .select-entry {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: 1px solid $index-page-main-border-color-grey;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+
+            &:hover {
+              cursor: pointer;
+              box-shadow: $color-shadow-large;
+            }
+          }
+        }
+
+        p {
+          width: 100%;
+          margin-top: 16px;
+          font-size: 14px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
+          svg {
+            margin-right: 4px;
+          }
         }
       }
     }
