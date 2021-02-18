@@ -10,7 +10,7 @@
           </a>
         </div>
         <div class="search" :class="{'is-active':isActive}">
-          <input @focus="focusIn" @focusout="focusOut" type="text" :placeholder="locale.indexPageLeftSearchPlaceholder">
+          <input v-model="searchContent" @focus="focusIn" @focusout="focusOut" type="text" :placeholder="locale.indexPageLeftSearchPlaceholder">
         </div>
         <div class="show">
           <ul>
@@ -40,29 +40,63 @@
 
 <script>
 import {BookIcon, BookOpenIcon,} from "vue-feather-icons"
+import {HttpPost} from "@/http/indexPage";
 
 export default {
   name: "IndexLeftComponent",
   components: {
     BookIcon, BookOpenIcon,
   },
-  props: [
-      "topicsData"
-  ],
   data() {
     return {
       locale: this.$locale,
       isActive: false,
+      isActiveBak: false,
+      searchContent: "",
+      topicsData:""
     }
   },
   methods: {
     focusIn() {
-      console.log(this.topicsData)
       this.isActive = true
+      this.isActiveBak = true
     },
     focusOut() {
       this.isActive = false
+      this.searchTopic()
+    },
+
+    dataInit() {
+      HttpPost("/api/post/select/me/topics").then(ret=>{
+        let lst = ret.data.code.split(" ")
+        if (lst[0] !== "200") {
+          alert(lst[1])
+          return
+        }
+        this.topicsData = ret.data.topicAbsList
+      }).catch(e=>{
+        console.log(e)
+      })
+    },
+
+    searchTopic() {
+      if (!this.isActiveBak || this.searchContent === "") return
+      HttpPost("/api/post/select/search/me/topics",{"name":"abc"}).then(ret=>{
+        console.log(ret)
+
+        let lst = ret.data.code.split(" ")
+        if (lst[0] !== "200") {
+          alert(lst[1])
+          return
+        }
+        this.topicsData = ret.data.topicAbsList
+      }).catch(e=>{
+        console.log(e)
+      })
     }
+  },
+  mounted() {
+    this.dataInit()
   }
 }
 </script>

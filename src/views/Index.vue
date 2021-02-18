@@ -30,13 +30,11 @@
 </template>
 
 <script>
-
 import TopBarComponent from "@/common/components/TopBarComponent";
 import IndexLeftComponent from "@/common/components/indexPage/IndexLeftComponent";
 import IndexRightComponent from "@/common/components/indexPage/IndexRightComponent";
 import IndexMiddleComponent from "@/common/components/indexPage/IndexMiddleComponent";
 import {XCircleIcon} from "vue-feather-icons"
-import {HttpPost} from "@/http/indexPage";
 
 export default {
   name: 'Home',
@@ -68,25 +66,10 @@ export default {
       }
       this.isTipActive = true
     },
-
-    daTaInit() {
-      HttpPost("/api/post/select/me/topics").then(ret=>{
-        let lst = ret.data.code.split(" ")
-        if (lst[0] !== "200") {
-          alert(lst[1])
-          return
-        }
-        this.topicsData = ret.data.topicAbsList
-
-      }).catch(e=>{
-        console.log(e)
-      })
-    }
   },
 
   mounted() {
     this.init()
-    this.daTaInit()
   },
 }
 </script>

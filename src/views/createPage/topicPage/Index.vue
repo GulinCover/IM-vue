@@ -7,15 +7,15 @@
     <main>
       <div class="content">
         <div class="header">
-          <h3>{{locale.createTopicH3}}</h3>
-          <p>{{locale.createTopicP}}</p>
+          <h3>{{ locale.createTopicH3 }}</h3>
+          <p>{{ locale.createTopicP }}</p>
         </div>
 
         <div class="info">
           <div class="title">
             <div class="title-left">
               <div>
-                <p>{{locale.owner}}</p>
+                <p>{{ locale.owner }}</p>
                 <div>
                   <div class="avatar"></div>
                   <p>Alex</p>
@@ -24,7 +24,7 @@
               <div></div>
             </div>
             <div class="title-right">
-              <p>{{locale.topicName}}</p>
+              <p>{{ locale.topicName }}</p>
               <input type="text">
             </div>
           </div>
@@ -32,7 +32,7 @@
             <p v-html="locale.topicDesc"></p>
           </div>
           <div class="user-desc">
-            <h3>{{locale.description}}</h3>
+            <h3>{{ locale.description }}</h3>
             <input type="text">
           </div>
         </div>
@@ -45,8 +45,8 @@
             <book-icon size="34"/>
           </div>
           <div>
-            <h4>{{locale.public}}</h4>
-            <p>{{locale.publicDesc}}</p>
+            <h4>{{ locale.public }}</h4>
+            <p>{{ locale.publicDesc }}</p>
           </div>
         </div>
 
@@ -55,32 +55,82 @@
             <li>
               <div class="entry-avatar">#</div>
               <div class="middle">
-                <h3>{{locale.entryContent}}</h3>
-                <p>{{locale.entryContentDesc}}</p>
+                <h3>{{ locale.entryContent }}</h3>
+                <p>{{ locale.entryContentDesc }}</p>
               </div>
               <div class="select-entry">
-                {{locale.selectEntry}}
+                <el-button class="el_button" type="text"
+                           @click="dialogContentVisible = true">
+                  {{ locale.selectEntry }}
+                </el-button>
+                <el-dialog class="el_dialog_show"
+                           :visible.sync="dialogContentVisible"
+                           width="30%"
+                >
+                  <h4>{{locale.selectDesc}}</h4>
+                  <ul>
+                    <li @click="selectContent(key)"
+                        v-for="(item,key) in selectedContentEntry" :key="key">
+                      <span>{{ item.name }}</span>
+                      <span>{{ item.desc }}</span>
+                    </li>
+                  </ul>
+                  <div class="show-entry">
+                      <div @click="deleteContent(item.entryId)"
+                            v-for="(item,key) in selectContentEntry" :key="key">
+                        <el-tooltip class="item" effect="dark" content="点击删除" placement="bottom">
+                          <span>{{ item.name }}</span>
+                        </el-tooltip>
+                      </div>
+                  </div>
+                </el-dialog>
               </div>
             </li>
             <li>
               <div class="entry-avatar">#</div>
               <div class="middle">
-                <h3>{{locale.entryRelated}}</h3>
-                <p>{{locale.entryRelatedDesc}}</p>
+                <h3>{{ locale.entryRelated }}</h3>
+                <p>{{ locale.entryRelatedDesc }}</p>
               </div>
               <div class="select-entry">
-                {{locale.selectEntry}}
+                <el-button class="el_button" type="text"
+                           @click="dialogRelatedVisible = true">
+                  {{ locale.selectEntry }}
+                </el-button>
+
+                <el-dialog class="el_dialog_show"
+                    :visible.sync="dialogRelatedVisible"
+                    width="30%"
+                >
+                  <h4>{{locale.selectDesc}}</h4>
+                  <ul>
+                    <li @click="selectRelated(key)"
+                        v-for="(item,key) in selectedRelatedEntry" :key="key">
+                      <span>{{ item.name }}</span>
+                      <span>{{ item.desc }}</span>
+                    </li>
+                  </ul>
+                  <div class="show-entry">
+                    <div @click="deleteRelated(item.entryId)"
+                         v-for="(item,key) in selectRelatedEntry" :key="key">
+                      <el-tooltip class="item" effect="dark" content="点击删除" placement="bottom">
+                        <span>{{ item.name }}</span>
+                      </el-tooltip>
+                    </div>
+
+                  </div>
+                </el-dialog>
               </div>
             </li>
             <p>
               <alert-circle-icon size="14"/>
-              {{locale.entryDesc}}
+              {{ locale.entryDesc }}
             </p>
           </ul>
         </div>
 
         <div class="button">
-          {{locale.createTopic}}
+          {{ locale.createTopic }}
         </div>
       </div>
     </main>
@@ -94,17 +144,113 @@
 <script>
 import BottomComponent from "@/common/components/marketplace/BottomComponent";
 import TopBar from "@/common/components/TopBarComponent";
-import {AlertCircleIcon,BookIcon} from "vue-feather-icons"
+import {AlertCircleIcon, BookIcon} from "vue-feather-icons"
+
 export default {
   name: "Index",
   components: {
     TopBar,
     BottomComponent,
-    AlertCircleIcon,BookIcon,
+    AlertCircleIcon, BookIcon,
   },
   data() {
     return {
-      locale:this.$locale,
+      locale: this.$locale,
+      dialogContentVisible: false,
+      dialogRelatedVisible: false,
+
+      selectedContentEntry: [
+        {
+          entryId: "1",
+          name: "1D",
+          desc: "hello world"
+        },
+        {
+          entryId: "2",
+          name: "2D",
+          desc: "hello worldhello worldhello worldhello worldhello worldhello world"
+        },
+        {
+          entryId: "3",
+          name: "3D",
+          desc: "hello worldhello world"
+        },
+        {
+          entryId: "4",
+          name: "4D",
+          desc: "hello worldhello world"
+        },
+        {
+          entryId: "5",
+          name: "5D",
+          desc: "hello worldhello world"
+        },
+      ],
+      selectContentEntry: [],
+
+      selectedRelatedEntry: [
+        {
+          entryId: "1",
+          name: "1D",
+          desc: "hello world"
+        },
+        {
+          entryId: "2",
+          name: "2D",
+          desc: "hello worldhello worldhello worldhello worldhello worldhello world"
+        },
+        {
+          entryId: "3",
+          name: "3D",
+          desc: "hello worldhello world"
+        },
+        {
+          entryId: "4",
+          name: "4D",
+          desc: "hello worldhello world"
+        },
+        {
+          entryId: "5",
+          name: "5D",
+          desc: "hello worldhello world"
+        },
+      ],
+      selectRelatedEntry: [],
+    }
+  },
+  methods: {
+    selectContent(index) {
+      const ele = this.selectedContentEntry[index]
+      for (let el of this.selectContentEntry) {
+        if (el.entryId === ele.entryId)
+          return
+      }
+      this.selectContentEntry.push(ele)
+    },
+
+    deleteContent(index) {
+      for (var i = 0; i < this.selectContentEntry.length; ++i) {
+        if (this.selectContentEntry[i].entryId.toString() === index.toString()) {
+          this.selectContentEntry.splice(i, 1)
+        }
+      }
+    },
+
+    selectRelated(index) {
+      const ele = this.selectedRelatedEntry[index]
+      for (let el of this.selectRelatedEntry) {
+        if (el.entryId === ele.entryId)
+          return
+      }
+      this.selectRelatedEntry.push(ele)
+    },
+
+    deleteRelated(index) {
+      for (var i = 0; i < this.selectRelatedEntry.length; ++i) {
+        if (this.selectRelatedEntry[i].entryId.toString() === index.toString()) {
+          this.selectRelatedEntry.splice(i, 1)
+        }
+      }
     }
   }
 }
@@ -165,6 +311,7 @@ main {
               margin-bottom: 6px;
               font-size: 14px;
             }
+
             > div {
               padding: 5px 16px;
               display: flex;
@@ -207,6 +354,7 @@ main {
             border-radius: 6px;
             border: 1px solid $index-page-main-border-color-grey;
             background-color: $index-page-main-background-color-grey;
+
             &:focus {
               border-color: $index-page-main-middle-font-color-blue;
               box-shadow: $color-state-focus-shadow;
@@ -234,6 +382,7 @@ main {
           border-radius: 6px;
           border: 1px solid $index-page-main-border-color-grey;
           background-color: $index-page-main-background-color-grey;
+
           &:focus {
             border-color: $index-page-main-middle-font-color-blue;
             box-shadow: $color-state-focus-shadow;
@@ -274,11 +423,13 @@ main {
 
         &:last-child {
           margin-left: 4px;
+
           h4 {
             margin-bottom: 4px;
             font-size: 16px;
             font-style: italic;
           }
+
           p {
             font-size: 14px;
           }
@@ -291,13 +442,13 @@ main {
       width: 100%;
       border-bottom: 1px solid $index-page-main-border-color-grey;
 
-      ul {
+      > ul {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         flex-direction: column;
 
-        li {
+        > li {
           position: relative;
           width: 90%;
           display: flex;
@@ -330,17 +481,79 @@ main {
           }
 
           .select-entry {
-            position: absolute;
-            top: 0;
-            right: 0;
-            border: 1px solid $index-page-main-border-color-grey;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 14px;
+            .el_button {
+              position: absolute;
+              top: 0;
+              right: 0;
+              border: 1px solid $index-page-main-border-color-grey;
+              padding: 5px 12px;
+              border-radius: 6px;
+              font-size: 14px;
+              color: $index-page-main-right-font-color-black;
 
-            &:hover {
-              cursor: pointer;
-              box-shadow: $color-shadow-large;
+              &:hover {
+                cursor: pointer;
+                box-shadow: $color-shadow-medium;
+              }
+            }
+
+            .el_dialog_show {
+              h4 {
+                margin-bottom: 4px;
+              }
+
+              ul {
+                width: 100%;
+
+                li {
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: flex-end;
+                  margin-bottom: 16px;
+
+                  &:hover {
+                    background: linear-gradient(to right, $index-page-main-background-color-grey-6, #fff);
+                    cursor: pointer;
+                  }
+
+                  span {
+                    &:first-child {
+                      background-color: $index-page-main-background-color-grey-7;
+                      margin-right: 4px;
+                      font-size: 18px;
+                      padding: 5px 12px;
+                      border: 1px solid $index-page-main-border-color-grey;
+                      border-radius: 6px;
+                    }
+
+                    &:last-child {
+                      width: 60%;
+                      border-bottom: 1px solid $index-page-main-border-color-grey;
+                      font-size: 12px;
+                    }
+                  }
+                }
+              }
+
+              .show-entry {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                align-items: flex-start;
+
+                span {
+                  margin-right: 4px;
+                  margin-bottom: 4px;
+                  border: 1px solid $index-page-main-border-color-grey;
+                  background-color: $index-page-main-background-color-grey;
+                  border-radius: 6px;
+                  padding: 2px 8px;
+
+                  &:hover {
+                    cursor: pointer;
+                  }
+                }
+              }
             }
           }
         }

@@ -23,11 +23,11 @@
 
       <div class="top-bar-middle">
         <div class="search-content" :class="{'is-active':isSearchActive}">
-          <input type="text" @focus="searchFocusIn" @focusout="searchFocusOut"
+          <input v-model="searchData" type="text" @focus="searchFocusIn" @focusout="searchFocusOut"
                  :placeholder="locale.topBarSearchPlaceholder">
           <div class="top-bar-search-show" :class="{'is-active':isSearchActive}">
             <ul>
-              <li @click="jumpTo(item.topicId)" class="jumpOp" v-for="(item, key) in searchHistorysData" :key="key">
+              <li @click="jumpTo(item.topicId)" class="jumpOp" v-for="(item, key) in searchShowData" :key="key">
                 <a @mouseover="searchRecord">
                   <span>
                     <clipboard-icon :size="'18'"/>
@@ -86,8 +86,22 @@
 
     <div class="mobile-drop-down-box"
          :class="{'is-active':isMobileMenuActive}">
-      <div class="search-content">
-        <input type="text" :placeholder="locale.topBarSearchPlaceholder">
+      <div class="search-mobile-content">
+        <input type="text" v-model="searchMobileData" :class="{'is-active':isMobileSearchActive}"
+               @focus="searchMobileFocusIn" @focusout="searchMobileFocusOut"
+               :placeholder="locale.topBarSearchPlaceholder">
+        <div class="show-card" :class="{'is-active':isMobileSearchActive}">
+          <a :href="`/marketplace/search?topicLike=${searchMobileData}`" @mouseover="searchRecord">
+            <span>
+              <book-icon :size="'18'"/>
+            </span>
+            <h3>{{ searchMobileData }}</h3>
+            <span>
+              Jump to
+              <external-link-icon :size="'12'"/>
+            </span>
+          </a>
+        </div>
       </div>
       <div @click="linkTo('/')">主页</div>
       <div @click="linkTo('/repository')" class="repository">仓库</div>
@@ -105,8 +119,8 @@
 
 <script>
 import icons from "@/icons/home.svg"
-import {LogOutIcon, BellIcon, PlusIcon, UserIcon, ClipboardIcon, ExternalLinkIcon} from "vue-feather-icons"
-import {HttpPost} from "@/http/indexPage";
+import {BookIcon, LogOutIcon, BellIcon, PlusIcon, UserIcon, ClipboardIcon, ExternalLinkIcon} from "vue-feather-icons"
+import {HttpGet, HttpPost} from "@/http/indexPage";
 
 export default {
   name: "TopBar",
@@ -116,7 +130,7 @@ export default {
     UserIcon,
     ClipboardIcon,
     ExternalLinkIcon,
-    LogOutIcon,
+    LogOutIcon, BookIcon,
   },
   data() {
     return {
@@ -125,8 +139,12 @@ export default {
       locale: this.$locale,
       isMobileMenuActive: false,
       isSearchActive: false,
+      isMobileSearchActive: false,
       isPop: false,
       isGlobal: false,
+      searchData: "",
+      searchMobileData: "",
+      searchShowData: "",
 
       searchHistorysData: [],
     }
@@ -154,6 +172,13 @@ export default {
     },
     searchFocusOut() {
       setTimeout(() => this.isSearchActive = false, 200)
+    },
+    searchMobileFocusIn() {
+      if (this.searchMobileData === "") return
+      this.isMobileSearchActive = true
+    },
+    searchMobileFocusOut() {
+      setTimeout(() => this.isMobileSearchActive = false, 200)
     },
 
     popShow(index) {
@@ -194,6 +219,7 @@ export default {
           return
         }
         this.searchHistorysData = ret.data.searchHistories
+        this.searchShowData = this.searchHistorysData
       }).catch(e => {
         console.log(e)
       })
@@ -209,22 +235,52 @@ export default {
     createData(index) {
       switch (index) {
         case 0:
-          window.open("/create/topic","_blank")
+          window.open("/create/topic", "_blank")
           break
         case 1:
           console.log(1)
           break
         case 2:
-          console.log(2)
+          alert("此功能暂未上线,请耐心等待...")
           break
         default:
           return;
       }
-    }
+    },
+
+    searchJumpTo() {
+      HttpGet("/api/post/select/search/global/topic", {name: this.searchData}).then(ret => {
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+
+        setTimeout(() => {
+          this.searchShowData = ret.data.topicAbsList
+        }, 1000)
+      }).catch(e => console.log(e))
+    },
+
   },
   mounted() {
     this.dataInit()
+
     window.addEventListener("click", this.globalClick)
+  },
+  watch: {
+    searchData(newVal) {
+      if (newVal !== "") {
+        this.searchJumpTo()
+      } else {
+        this.searchShowData = this.searchHistorysData
+      }
+    },
+
+    searchMobileData(newVal) {
+      if (newVal !== "")
+        this.searchMobileFocusIn()
+    }
   }
 }
 </script>
@@ -547,29 +603,95 @@ div.is-hover:hover {
       opacity: 0;
       transition: all .5s;
 
-      .search-content {
-        margin-bottom: 16px;
-        height: 30px;
+      .search-mobile-content {
         width: 100%;
-        border-radius: 6px;
-        border: 1px solid $top-bar-search-border-color;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: flex-start;
         justify-items: center;
+        transition: all .2s;
+        padding-bottom: 16px;
 
         input {
+          border-radius: 6px;
+          border: 1px solid $top-bar-search-border-color;
           background: none;
-          border: none;
+          padding: 8px 16px;
           width: 100%;
-          padding: 0 12px;
+          outline: none;
+
+          &.is-active {
+            background: white;
+            border: 2px solid $index-page-main-middle-font-color-blue-2;
+            box-shadow: $color-state-focus-shadow;
+          }
         }
 
-        div {
-          width: 19px;
+        .show-card {
+          opacity: 0;
+          visibility: hidden;
+          transition: all .2s;
+          height: 0;
+          border-radius: 6px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          color: black;
+
+          > a {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            color: $index-page-main-right-font-color-black;
+            transition: all .2s;
+
+            &:hover {
+              background: $index-page-main-middle-font-color-blue-2;
+            }
+
+            &:hover span:last-child {
+              opacity: 1;
+              visibility: visible;
+            }
+
+            h3 {
+              text-align: start;
+              width: 100%;
+              margin-left: 8px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            span:last-child {
+              opacity: 0;
+              visibility: hidden;
+              width: 72px;
+              background: $index-page-main-middle-background-grey;
+              font-size: 12px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              border-radius: 6px;
+              border: 1px solid $index-page-main-middle-font-color-blue-2;
+              height: 28px;
+              padding: 6px;
+              transition: all .2s;
+            }
+          }
+
+          &.is-active {
+            opacity: 1;
+            visibility: visible;
+            height: 48px;
+            background-color: white;
+          }
         }
       }
 
-      div {
+      > div:not(:first-child) {
         height: 40px;
         width: 100%;
         border-top: 1px solid $top-bar-search-border-color;
