@@ -7,7 +7,6 @@
     <main>
       <nav-component
           :path-name="this.$route.name"
-          :locale="locale"
       />
 
       <div class="topic-desc">
@@ -16,38 +15,75 @@
       </div>
 
       <ul class="topic-recommend">
-        <li v-for="(item, key) in recommendData" :key="key">
-          <a href="">
-            <div class="picture">
-              <!--            <img :src="item.entryPicture" alt="">-->
-              <img src="" alt="">
-              <star-icon/>
+        <li v-for="(item, key) in recommendEntryData" :key="key">
+          <div>
+            <div v-if="recommendedLikeSwitch[key] === 0" @click.stop="likeTo(item.entryId,0)">
+              <star-icon :size="'16'"/>
             </div>
-            <h3>{{item.entry}}</h3>
+            <div @click.stop="popRightInfo" v-else>
+              <thumbs-up-icon :size="'16'"/>
+            </div>
+            <el-dialog
+                v-loading="fullscreenLoading"
+                title="提示"
+                :visible.sync="dialogVisible1"
+                width="30%">
+              <span>点赞会扣除两枚硬币,请勿误操作.</span>
+              <span slot="footer" class="dialog-footer">
+              <el-button @click.stop="dialogVisible = false">取 消</el-button>
+              <el-button type="primary"
+                         @click.stop="okToLike(0)"
+              >确 定</el-button>
+            </span>
+            </el-dialog>
+            <div class="picture" @click="jumpTo(item.entryId)">
+              <img :src="item.entryAvatar" alt="">
+            </div>
+            <h3>{{item.entryName}}</h3>
             <p>{{item.entryDesc}}</p>
-          </a>
+          </div>
         </li>
       </ul>
+
       <div class="topic-content">
         <div class="left">
           <h3>{{locale.topicPageAllTopicEntry}}</h3>
           <ul>
-            <li v-for="(item, key) in topicsData" :key="key">
-              <div>
-                <img src="" alt="">
+            <li v-for="(item, key) in allEntryData" :key="key">
+              <div @click="jumpTo(item.entryId)" >
+                <img :src="item.entryAvatar" alt="">
               </div>
               <div>
-                <h3>{{item.name}}</h3>
-                <p>{{item.desc}}</p>
+                <h3>{{item.entryName}}</h3>
+                <p>{{item.entryDesc}}</p>
               </div>
-              <div>
+
+              <div @click="likeTo(item.entryId,1)" class="like-button" v-if="allLikeSwitch[key] === 0">
                 <star-icon :size="'16'"/>
                 Star
               </div>
+              <div @click="popRightInfo" class="like-button" v-else>
+                <thumbs-up-icon :size="'16'"/>
+              </div>
+              <el-dialog
+                  v-loading="fullscreenLoading"
+                  title="提示"
+                  :visible.sync="dialogVisible2"
+                  width="30%">
+                <span>点赞会扣除两枚硬币,请勿误操作.</span>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click.stop="dialogVisible = false">取 消</el-button>
+                  <el-button type="primary"
+                             @click.stop="okToLike(1)"
+                  >确 定</el-button>
+                </span>
+              </el-dialog>
             </li>
           </ul>
-          <a href="">more</a>
+          <div v-if="inEnd" class="more-button">more</div>
+          <div @click="loadMore" v-else class="more-button">more</div>
         </div>
+
         <div class="right">
           <h3>{{locale.topicPageRelatedTopicEntry}}</h3>
           <ul>
@@ -74,7 +110,8 @@
 import TopBar from "@/common/components/TopBarComponent";
 import NavComponent from "@/common/components/topicPage/NavComponent";
 import BottomComponent from "@/common/components/explorePage/BottomComponent";
-import {StarIcon} from "vue-feather-icons"
+import {StarIcon,ThumbsUpIcon} from "vue-feather-icons"
+import {HttpGet, HttpPost} from "@/http/indexPage";
 
 export default {
   name: "Index",
@@ -82,7 +119,7 @@ export default {
     BottomComponent,
     NavComponent,
     TopBar,
-    StarIcon,
+    StarIcon,ThumbsUpIcon
   },
   data() {
     return {
@@ -117,44 +154,12 @@ export default {
         ],
       },
 
-      recommendData: [
-        {
-          entryId:'1',
-          entry: "测试",
-          entryPicture: "",
-          entryDesc: "this is a entry desc"
-        },
-        {
-          entryId:'1',
-          entry: "测试",
-          entryPicture: "",
-          entryDesc: "this is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry desc"
-        },
-        {
-          entryId:'1',
-          entry: "测试",
-          entryPicture: "",
-          entryDesc: "this is a entry desc"
-        },
-      ],
-      topicsData:[
-        {
-          name: "3D",
-          desc:"this is a entry desc"
-        },
-        {
-          name: "3D",
-          desc:"this is a entry desc"
-        },
-        {
-          name: "3D",
-          desc:"this is a entry desc"
-        },
-        {
-          name: "3D",
-          desc:"this is a entry desc"
-        },
-      ],
+      recommendEntryData: [],
+
+      allEntryData:[],
+      entryPage: 0,
+      inEnd: false,
+
       relatedEntryData:[
         {
           entryId:"1",
@@ -197,10 +202,79 @@ export default {
           name:"3D",
         },
       ],
+
+      likeId: null,
+      likeFalse: false,
+      dialogVisible1: false,
+      dialogVisible2: false,
+      fullscreenLoading: false,
+      recommendedLikeSwitch: [],
+      allLikeSwitch: [],
     }
   },
   methods: {
-    widthFix() {
+    okToLike(index) {
+      if (this.likeId === null) return
+
+      this.fullscreenLoading = true
+      let data = {
+        "id":`${this.likeId}`,
+        "type":"entry"
+      }
+      HttpPost("/api/post/insert/like",data).then(ret=>{
+        let res = ret.data.split(" ")
+        if (res[0] !== "200") {
+          this.fullscreenLoading = false
+          alert(res[1])
+          return
+        }
+
+        if (index === 0) {
+          this.recommendEntryData.forEach((it,k)=>{
+            if (it.entryId === this.likeId || it.entryId.toString() === this.likeId.toString()) {
+              this.recommendedLikeSwitch[k] = 1
+            }
+          })
+          this.dialogVisible1 = false
+        } else {
+          this.allEntryData.forEach((it,k)=>{
+            if (it.entryId === this.likeId || it.entryId.toString() === this.likeId.toString()) {
+              this.allLikeSwitch[k] = 1
+            }
+          })
+          this.dialogVisible2 = false
+        }
+
+        this.fullscreenLoading = false
+      }).catch(e=>{
+        this.fullscreenLoading = false
+        console.log(e)
+      })
+
+    },
+
+    likeTo(id, index) {
+      this.likeId = id
+      if (index===0)
+        this.dialogVisible1 = true
+      else
+        this.dialogVisible2 = true
+    },
+
+    popRightInfo() {
+      const h = this.$createElement;
+
+      this.$notify({
+        title: '您已点赞,请勿重复操作',
+        message: h()
+      });
+    },
+
+    jumpTo(web) {
+      window.open(`/topic/entry/${web}`,"_blank")
+    },
+
+    heightFixed() {
       let elements = document.querySelector(".topic-recommend").childNodes
 
       if (document.body.clientWidth > 543) {
@@ -218,15 +292,50 @@ export default {
         })
       }
 
-      // console.log(123)
+    },
+
+    loadMore() {
+      this.getAllEntryData()
+    },
+
+    getAllEntryData() {
+      HttpGet(`/api/get/select/all/EntriesInfo?entry_page=${this.entryPage}`).then(ret=>{
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+
+        this.allEntryData.push(...ret.data.entryAbsList)
+        this.allEntryData.forEach((it,k)=>{
+          this.allLikeSwitch[k] = it.isLiked
+        })
+      }).catch(e=>console.log(e))
+      ++this.entryPage
+    },
+
+    dataInit() {
+      HttpGet("/api/get/select/recommended/EntriesInfo").then(ret=>{
+        let res = ret.data.code.split(" ")
+
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+        this.recommendEntryData = ret.data.entryAbsList
+        this.recommendEntryData.forEach((it,k)=>{
+          this.recommendedLikeSwitch[k] = it.isLiked
+        })
+      }).catch(e=>console.log(e))
+      this.getAllEntryData()
     }
   },
 
   mounted() {
-    this.widthFix()
-    window.onresize = this.widthFix
+    this.heightFixed()
+    this.dataInit()
+    window.onresize = this.heightFixed
 
-    // console.log(elements[0].firstChild.style.height)
   }
 }
 </script>
@@ -265,7 +374,7 @@ main {
       li {
         flex: 1;
 
-        > a {
+        > div {
           position: relative;
           padding: 32px;
           margin: 0 16px 24px;
@@ -278,19 +387,29 @@ main {
           line-height: 1.5;
           color: $index-page-main-font-color-grey-3;
 
-          > div {
-            margin: 0 auto 16px;
-            max-width: 48px;
-            max-height: 48px;
-            min-width: 24px;
-            min-height: 24px;
-            padding: 8px;
-            overflow: hidden;
+          > div:first-child {
+            width: 48px;
+            height: 48px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          > .picture {
+            margin: 0 auto;
+            width: 56px;
+            height: 56px;
 
             img {
-              border-radius: 6px;
+              clip-path: circle(40%);
+              width: 56px;
+              height: 56px;
+              object-fit: cover;
+              object-position: top left;
             }
-
 
             svg {
               position: absolute;
@@ -299,12 +418,9 @@ main {
             }
           }
 
-          h3 {
-
-          }
-
           p {
             font-size: 12px;
+            margin-bottom: 16px;
           }
 
         }
@@ -341,12 +457,19 @@ main {
             justify-content: flex-start;
 
             div:first-child {
-              min-width: 64px;
-              max-width: 64px;
+              width: 64px;
               height: 64px;
-              background: $index-page-main-background-color-blue-2;
               margin-right: 16px;
               border-radius: 6px;
+              background: $index-page-main-background-color-blue-2;
+
+              img {
+                border-radius: 6px;
+                width: 64px;
+                height: 64px;
+                object-position: top left;
+                object-fit: cover;
+              }
             }
 
             div:nth-child(2) {
@@ -362,7 +485,7 @@ main {
               }
             }
 
-            div:last-child {
+            .like-button {
               font-size: 14px;
               display: flex;
               justify-content: center;
@@ -373,6 +496,10 @@ main {
               border-radius: 6px;
               padding: 3px 12px;
 
+              &:hover {
+                cursor: pointer;
+              }
+
               svg {
                 margin-right: 4px;
               }
@@ -381,7 +508,7 @@ main {
           }
         }
 
-        a {
+        .more-button {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -394,6 +521,7 @@ main {
           transition: all .2s;
 
           &:hover {
+            cursor: pointer;
             background: $index-page-main-background-color-grey;
           }
         }
@@ -451,7 +579,7 @@ main {
       li {
         width: 50%;
 
-        > a {
+        > div {
           position: relative;
           padding: 32px;
           margin: 0 16px 24px;
@@ -465,16 +593,16 @@ main {
           color: $index-page-main-font-color-grey-3;
 
           > div {
-            margin: 0 auto 16px;
-            max-width: 48px;
-            max-height: 48px;
-            min-width: 24px;
-            min-height: 24px;
-            padding: 8px;
-            overflow: hidden;
+            margin: 0 auto;
+            width: 56px;
+            height: 56px;
 
             img {
-              border-radius: 6px;
+              clip-path: circle(40%);
+              width: 56px;
+              height: 56px;
+              object-fit: cover;
+              object-position: top left;
             }
 
 
@@ -485,12 +613,9 @@ main {
             }
           }
 
-          h3 {
-
-          }
-
           p {
             font-size: 12px;
+            margin-bottom: 16px;
           }
 
         }
@@ -528,12 +653,19 @@ main {
             justify-content: flex-start;
 
             div:first-child {
-              min-width: 64px;
-              max-width: 64px;
+              width: 64px;
               height: 64px;
-              background: $index-page-main-background-color-blue-2;
               margin-right: 16px;
               border-radius: 6px;
+              background: $index-page-main-background-color-blue-2;
+
+              img {
+                border-radius: 6px;
+                width: 64px;
+                height: 64px;
+                object-position: top left;
+                object-fit: cover;
+              }
             }
 
             div:nth-child(2) {
@@ -568,7 +700,7 @@ main {
           }
         }
 
-        a {
+        .more-button {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -581,6 +713,7 @@ main {
           transition: all .2s;
 
           &:hover {
+            cursor: pointer;
             background: $index-page-main-background-color-grey;
           }
         }
@@ -635,7 +768,7 @@ main {
       li {
         width: 100%;
 
-        > a {
+        > div {
           position: relative;
           padding: 32px;
           margin: 0 16px 24px;
@@ -648,17 +781,28 @@ main {
           line-height: 1.5;
           color: $index-page-main-font-color-grey-3;
 
-          > div {
-            margin: 0 auto 16px;
-            max-width: 48px;
-            max-height: 48px;
-            min-width: 24px;
-            min-height: 24px;
-            padding: 8px;
-            overflow: hidden;
+          > div:first-child {
+            width: 48px;
+            height: 48px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          > .picture {
+            margin: 0 auto;
+            width: 56px;
+            height: 56px;
 
             img {
-              border-radius: 6px;
+              clip-path: circle(40%);
+              width: 56px;
+              height: 56px;
+              object-fit: cover;
+              object-position: top left;
             }
 
 
@@ -712,12 +856,19 @@ main {
             justify-content: flex-start;
 
             div:first-child {
-              min-width: 64px;
-              max-width: 64px;
+              width: 64px;
               height: 64px;
-              background: $index-page-main-background-color-blue-2;
               margin-right: 16px;
               border-radius: 6px;
+              background: $index-page-main-background-color-blue-2;
+
+              img {
+                border-radius: 6px;
+                width: 64px;
+                height: 64px;
+                object-position: top left;
+                object-fit: cover;
+              }
             }
 
             div:nth-child(2) {
@@ -752,7 +903,7 @@ main {
           }
         }
 
-        a {
+        .more-button {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -765,6 +916,7 @@ main {
           transition: all .2s;
 
           &:hover {
+            cursor: pointer;
             background: $index-page-main-background-color-grey;
           }
         }

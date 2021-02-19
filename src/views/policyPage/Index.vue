@@ -6,7 +6,6 @@
 
     <main>
       <nav-component
-          :locale="locale"
           :path-name="this.$route.name"
       />
 

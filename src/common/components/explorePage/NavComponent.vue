@@ -25,9 +25,13 @@
 export default {
   name: "NavComponent",
   props: [
-      "locale",
       "pathName"
   ],
+  data() {
+    return {
+      locale:this.$locale
+    }
+  },
   methods: {
     navFix() {
       let nav = document.querySelector(".nav-wrapper")
