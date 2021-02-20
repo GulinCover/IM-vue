@@ -205,10 +205,7 @@
     </main>
 
     <footer>
-      <bottom-component
-          :bottom-data="bottomData"
-          :locale="locale"
-      />
+      <bottom-component/>
     </footer>
 
   </div>

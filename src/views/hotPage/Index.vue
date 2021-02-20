@@ -78,10 +78,7 @@
     </main>
 
     <footer>
-      <bottom-component
-          :locale="locale"
-          :bottom-data="bottomData"
-      />
+      <bottom-component/>
       <div class="backdrop"></div>
     </footer>
   </div>

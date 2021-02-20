@@ -55,6 +55,11 @@ const routes = [
         component: ()=>import("@/views/userManagerPage/Index")
     },
     {
+        path: "/topic/public/search",
+        name: "searchTopic",
+        component: ()=>import("@/views/topicPublicSearchPage/Index")
+    },
+    {
         path: "/topic/public/:id",
         name: "topicPublic",
         component: ()=>import("@/views/topicPublicPage/Index")
@@ -85,10 +90,47 @@ const routes = [
         component: ()=>import("@/views/topicPublicPage/managerPage/Index")
     },
     {
-        path: "/create/topic",
+        path: "/create",
         name: "createTopic",
-        component: ()=>import("@/views/createPage/topicPage/Index")
-    }
+        component: ()=>import("@/views/createPage/Index"),
+        children: [
+            {
+                path:"topic",
+                name:"createTopicChild",
+                component: ()=>import("@/views/createPage/topicPage/Index"),
+            },
+            {
+                path: "entry",
+                name: "createEntryChild",
+                component: ()=>import("@/views/createPage/entryPage/Index")
+            },
+            {
+                path: "hot",
+                name: "createHotChild",
+                component: ()=>import("@/views/createPage/hotPage/Index")
+            },
+        ]
+    },
+    {
+        path: "/login",
+        name: "login",
+        component: ()=>import("@/views/loginPage/Index")
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: ()=>import("@/views/registerPage/Index")
+    },
+    {
+        path: "/error",
+        name: "error",
+        component: ()=>import("@/views/errorPage/Index")
+    },
+    {
+        path: "/forgot",
+        name: "forgot",
+        component: ()=>import("@/views/forgotPasswordPage/Index")
+    },
 ]
 
 const router = new VueRouter({

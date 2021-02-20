@@ -19,10 +19,7 @@
     </main>
 
     <footer>
-      <bottom-component
-          :locale="locale"
-          :bottom-data="bottomData"
-      />
+      <bottom-component/>
     </footer>
   </div>
 </template>
@@ -41,36 +38,6 @@ export default {
   data() {
     return {
       locale:this.$locale,
-      bottomData: {
-        first: {
-          left: {
-            name: 'GitHub',
-            h3: "请支持GitHub",
-            p: "感谢GitHub的技术支持",
-            url: "https://github.com",
-          },
-          right: [],
-        },
-        second: [
-          {
-            name: "@2021GitHub,Inc,",
-            url: '',
-          },
-          {
-            name: "Terms",
-            url: '',
-          },
-          {
-            name: "Policy",
-            url: '',
-          },
-          {
-            name: "What is WeekType?",
-            url: '',
-          },
-        ],
-      },
-
     }
   }
 }

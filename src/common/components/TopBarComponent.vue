@@ -59,7 +59,8 @@
               <div></div>
               <li @click="createData(0)">创建著述</li>
               <li @click="createData(1)">创建词条</li>
-              <li @click="createData(2)">创建认证</li>
+              <li @click="createData(2)">创建热论词条</li>
+              <li @click="createData(3)">创建认证</li>
             </ul>
           </div>
         </div>
@@ -77,7 +78,7 @@
               <li @click="newLinkTo('/repository')">您的仓库</li>
               <h4></h4>
               <li @click="newLinkTo('/user/manager')">设置</li>
-              <li @click="newLinkTo('/logout')">登出</li>
+              <li @click="logout">登出</li>
             </ul>
           </div>
         </div>
@@ -108,7 +109,7 @@
       <div @click="linkTo('/marketplace')" class="marketplace">市场</div>
       <div @click="linkTo('/explore')" class="explore">发现</div>
       <div @click="linkTo('/user/manager')" class="setting">设置</div>
-      <div @click="linkTo('/logout')" class="logout">
+      <div @click="logout()" class="logout">
         <log-out-icon/>
         <span>登出</span>
       </div>
@@ -120,7 +121,7 @@
 <script>
 import icons from "@/icons/home.svg"
 import {BookIcon, LogOutIcon, BellIcon, PlusIcon, UserIcon, ClipboardIcon, ExternalLinkIcon} from "vue-feather-icons"
-import {HttpGet, HttpPost} from "@/http/indexPage";
+import { HttpPost} from "@/http/indexPage";
 
 export default {
   name: "TopBar",
@@ -204,6 +205,10 @@ export default {
       this.$router.push(web)
     },
 
+    logout() {
+      this.$router.push("/login")
+    },
+
     newLinkTo(web) {
       if (this.$route.path === web) return
       window.open(web, "_blank")
@@ -238,10 +243,15 @@ export default {
           window.open("/create/topic", "_blank")
           break
         case 1:
-          console.log(1)
+          window.open("/create/entry", "_blank")
           break
         case 2:
-          alert("此功能暂未上线,请耐心等待...")
+          window.open("/create/hot", "_blank")
+          break
+        case 3:
+          this.$message({
+            message:"此功能暂未上线,请耐心等待...",
+          })
           break
         default:
           return;
@@ -249,17 +259,12 @@ export default {
     },
 
     searchJumpTo() {
-      HttpGet("/api/post/select/search/global/topic", {name: this.searchData}).then(ret => {
-        let res = ret.data.code.split(" ")
-        if (res[0] !== "200") {
-          alert(res[1])
-          return
+      this.searchShowData = [
+        {
+          topicId: `search?blurry=${this.searchData}`,
+          topicTitle: this.searchData
         }
-
-        setTimeout(() => {
-          this.searchShowData = ret.data.topicAbsList
-        }, 1000)
-      }).catch(e => console.log(e))
+      ]
     },
 
   },
@@ -460,12 +465,12 @@ div.is-hover:hover {
             visibility: hidden;
 
             &.is-active {
+              z-index: 1000;
               opacity: 1;
               visibility: visible;
               position: absolute;
               top: 32px;
               right: 0;
-              z-index: 99;
               background: white;
               border: 1px solid $index-page-main-border-color-grey;
               border-radius: 6px;

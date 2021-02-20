@@ -34,15 +34,14 @@ export default {
 @import "~@/api/GlobalApi.scss";
 
 .bottom-card-wrapper {
-  margin: 24px auto 40px;
-  padding: 0 16px;
+  margin: 24px auto 0;
+  padding: 0 16px 40px;
   max-width: 1012px;
   width: 100%;
 
   @media screen and (min-width: $middle) {
     .bottom-card {
       margin: 0 auto;
-      background: white;
       box-shadow: $color-shadow-extra-large;
       display: flex;
       justify-content: flex-start;
@@ -73,7 +72,6 @@ export default {
   @media screen and (max-width: $middle) and (min-width: $mini) {
     .bottom-card {
       margin: 0 auto;
-      background: white;
       box-shadow: $color-shadow-extra-large;
       display: flex;
       flex-direction: column;
@@ -112,7 +110,6 @@ export default {
   @media screen and (max-width: $mini) {
     .bottom-card {
       margin: 0 auto;
-      background: white;
       box-shadow: $color-shadow-extra-large;
       display: flex;
       flex-direction: column;

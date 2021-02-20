@@ -98,7 +98,6 @@
 
     <footer>
       <bottom-component
-          :locale="locale"
           :bottom-data="bottomData"
       />
     </footer>

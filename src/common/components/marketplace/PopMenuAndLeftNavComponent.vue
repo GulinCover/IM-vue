@@ -117,10 +117,6 @@ export default {
   },
   methods: {
     fixPopMenu() {
-      // if (this.isPopMenuActive) {
-      //   let element = document.querySelector(".pop-menu-wrapper")
-      //   element.style.top = `${window.scrollY}px`
-      // }
       let element = document.querySelector(".pop-menu-wrapper")
       try {
         element.style.top = `${window.scrollY}px`
@@ -148,6 +144,7 @@ export default {
 @import "~@/api/GlobalApi.scss";
 
 .content-wrapper {
+  padding-top: 12px;
   background: $index-page-main-background-color-grey;
   width: 100%;
 

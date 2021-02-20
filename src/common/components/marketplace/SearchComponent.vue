@@ -1,20 +1,37 @@
 <template>
-<div class="search-wrapper">
-  <div class="search">
-    <search-icon :size="'18'"/>
-    <input type="text">
+  <div class="search-wrapper">
+    <div class="search"
+         @focusin="isActive = true"
+         @focusout="isActive = false"
+         :class="{'is-active':isActive}">
+      <search-icon :size="'18'"/>
+      <input type="text"
+             @keyup.enter="search"
+             v-model="searchContent">
+    </div>
   </div>
-</div>
 </template>
 
 <script>
 import {SearchIcon} from "vue-feather-icons"
 
 export default {
-name: "SearchComponent",
+  name: "SearchComponent",
   components: {
     SearchIcon,
   },
+  data() {
+    return {
+      isActive: false,
+      searchContent: "",
+    }
+  },
+  methods: {
+    search() {
+      if (this.searchContent === "") return
+      window.open(`/marketplace/search?blurry=${this.searchContent}`)
+    }
+  }
 }
 </script>
 
@@ -32,6 +49,10 @@ name: "SearchComponent",
     display: flex;
     justify-content: flex-start;
     align-items: center;
+
+    &.is-active {
+      box-shadow: $color-state-focus-shadow;
+    }
 
     svg {
       margin-right: 10px;

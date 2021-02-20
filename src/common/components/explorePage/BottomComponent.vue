@@ -2,10 +2,10 @@
   <div class="bottom-wrapper">
     <div class="first">
       <div class="left">
-        <h2>{{ bottomData.first.left.name }}</h2>
-        <h3>{{ bottomData.first.left.h3 }}</h3>
-        <p>{{ bottomData.first.left.p }}</p>
-        <a target="_blank" :href="bottomData.first.left.url">{{ locale.subscribe }}</a>
+        <h2>{{ bottomData.first.name }}</h2>
+        <h3>{{ bottomData.first.h3 }}</h3>
+        <p>{{ bottomData.first.p }}</p>
+        <a target="_blank" :href="bottomData.first.url">{{ locale.subscribe }}</a>
       </div>
 
       <ul v-for="(item,key) in locale.bottomList" :key="key">
@@ -23,7 +23,7 @@
           </a>
         </div>
         <div class="right">
-          <a href="">
+          <a href="https://github.com/gulincover">
             <github-icon :size="'18'"/>
           </a>
         </div>
@@ -40,10 +40,38 @@ export default {
   components: {
     GithubIcon,
   },
-  props: [
-    "bottomData",
-    "locale",
-  ],
+  data() {
+    return {
+      bottomData: {
+        first: {
+          name: 'GitHub',
+          h3: "请支持GitHub",
+          p: "感谢GitHub的技术支持",
+          url: "https://github.com/gulincover",
+        },
+        second: [
+          {
+            name: "@2021GitHub,Inc,",
+            url: 'https://github.com/gulincover',
+          },
+          {
+            name: "Terms",
+            url: 'https://github.com/gulincover',
+          },
+          {
+            name: "Policy",
+            url: '/policy',
+          },
+          {
+            name: "What is WeekType?",
+            url: '/policy',
+          },
+        ],
+      },
+
+      locale:this.$locale
+    }
+  }
 }
 </script>
 
