@@ -22,7 +22,7 @@
           </div>
           <div class="visibility-desc">
             <h4>{{locale.public}}</h4>
-            <div>{{locale.publicEntryDesc}}</div>
+            <div>{{locale.publicHotEntryDesc}}</div>
           </div>
         </div>
       </div>

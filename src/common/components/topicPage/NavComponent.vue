@@ -14,7 +14,7 @@
         <a @click="jump('/policy')">{{ locale.policy }}</a>
       </div>
       <div>
-        <a>申请词条</a>
+        <a href="/create/entry" target="_blank">申请词条</a>
       </div>
     </div>
   </div>

@@ -346,10 +346,11 @@
   "publicEntryDesc": "当词条审核通过后,即所有人都可以使用此词条,出现违反或者侵犯行为时,词条会被立刻删除.",
   "createEntry": "创建词条",
 
-  "createHotEntryH3": "创建一个词条",
-  "createHotEntryP": "当您创建的词条被审核通过时,其他人就可以一同同您使用它了.",
-  "hotEntryName": "请输入词条的内容",
+  "createHotEntryH3": "创建一个热论词条",
+  "createHotEntryP": "当您创建的热论词条被审核通过时,其他人就可以一同同您使用它了.",
+  "hotEntryName": "请输入热论词条的内容",
   "createHotEntry": "创建热论词条",
+  "publicHotEntryDesc": "当词条审核通过后,即所有人都可以使用此词条,出现违反或者侵犯行为时,词条会被立刻删除.",
 
 
 
@@ -358,6 +359,7 @@
   "loginLeafBook": "登录LeafBook",
   "emailOrPhone": "注册的邮箱地址或绑定的手机号码",
   "password": "密码",
+  "rePassword": "确认密码",
   "forgotPassword": "忘记密码?",
   "login": "登录",
   "newAccountMessage": "没有账号?<a href='/register'>创建账号</a>",

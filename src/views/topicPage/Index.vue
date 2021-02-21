@@ -17,7 +17,7 @@
       <ul class="topic-recommend">
         <li v-for="(item, key) in recommendEntryData" :key="key">
           <div>
-            <div v-if="recommendedLikeSwitch[key] === 0" @click.stop="likeTo(item.entryId,0)">
+            <div v-if="item.isLiked === 0" @click.stop="likeTo(item.entryId,0)">
               <star-icon :size="'16'"/>
             </div>
             <div @click.stop="popRightInfo" v-else>
@@ -30,7 +30,7 @@
                 width="30%">
               <span>点赞会扣除两枚硬币,请勿误操作.</span>
               <span slot="footer" class="dialog-footer">
-              <el-button @click.stop="dialogVisible = false">取 消</el-button>
+              <el-button @click.stop="dialogVisible1 = false">取 消</el-button>
               <el-button type="primary"
                          @click.stop="okToLike(0)"
               >确 定</el-button>
@@ -58,7 +58,7 @@
                 <p>{{item.entryDesc}}</p>
               </div>
 
-              <div @click="likeTo(item.entryId,1)" class="like-button" v-if="allLikeSwitch[key] === 0">
+              <div @click="likeTo(item.entryId,1)" class="like-button" v-if="item.isLiked === 0">
                 <star-icon :size="'16'"/>
                 Star
               </div>
@@ -72,7 +72,7 @@
                   width="30%">
                 <span>点赞会扣除两枚硬币,请勿误操作.</span>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click.stop="dialogVisible = false">取 消</el-button>
+                  <el-button @click.stop="dialogVisible2 = false">取 消</el-button>
                   <el-button type="primary"
                              @click.stop="okToLike(1)"
                   >确 定</el-button>
@@ -87,8 +87,8 @@
         <div class="right">
           <h3>{{locale.topicPageRelatedTopicEntry}}</h3>
           <ul>
-            <li v-for="(item, key) in relatedEntryData" :key="key">
-              {{item.name}}
+            <li @click="jumpTo(item.entryId)" v-for="(item, key) in relatedEntryData" :key="key">
+              {{item.entryName}}
             </li>
           </ul>
         </div>
@@ -97,9 +97,7 @@
     </main>
 
     <footer>
-      <bottom-component
-          :bottom-data="bottomData"
-      />
+      <bottom-component/>
     </footer>
 
   </div>
@@ -123,35 +121,6 @@ export default {
   data() {
     return {
       locale:this.$locale,
-      bottomData: {
-        first: {
-          left: {
-            name: 'GitHub',
-            h3: "请支持GitHub",
-            p: "感谢GitHub的技术支持",
-            url: "https://github.com",
-          },
-          right: [],
-        },
-        second: [
-          {
-            name: "@2021GitHub,Inc,",
-            url: '',
-          },
-          {
-            name: "Terms",
-            url: '',
-          },
-          {
-            name: "Policy",
-            url: '',
-          },
-          {
-            name: "What is WeekType?",
-            url: '',
-          },
-        ],
-      },
 
       recommendEntryData: [],
 
@@ -159,56 +128,13 @@ export default {
       entryPage: 0,
       inEnd: false,
 
-      relatedEntryData:[
-        {
-          entryId:"1",
-          name:"3eqwD",
-        },
-        {
-          entryId:"1",
-          name:"3D",
-        },
-        {
-          entryId:"1",
-          name:"eqweqw3D",
-        },
-        {
-          entryId:"1",
-          name:"3D",
-        },
-        {
-          entryId:"1",
-          name:"3qwD",
-        },
-        {
-          entryId:"1",
-          name:"3Dsfaasfasfasfasfasf",
-        },
-        {
-          entryId:"1",
-          name:"3Dqwfqw",
-        },
-        {
-          entryId:"1",
-          name:"3Deqw",
-        },
-        {
-          entryId:"1",
-          name:"3eqwD",
-        },
-        {
-          entryId:"1",
-          name:"3D",
-        },
-      ],
+      relatedEntryData:[],
 
       likeId: null,
       likeFalse: false,
       dialogVisible1: false,
       dialogVisible2: false,
       fullscreenLoading: false,
-      recommendedLikeSwitch: [],
-      allLikeSwitch: [],
     }
   },
   methods: {
@@ -229,16 +155,16 @@ export default {
         }
 
         if (index === 0) {
-          this.recommendEntryData.forEach((it,k)=>{
+          this.recommendEntryData.forEach(it=>{
             if (it.entryId === this.likeId || it.entryId.toString() === this.likeId.toString()) {
-              this.recommendedLikeSwitch[k] = 1
+              it.isLiked = 1
             }
           })
           this.dialogVisible1 = false
         } else {
-          this.allEntryData.forEach((it,k)=>{
+          this.allEntryData.forEach(it=>{
             if (it.entryId === this.likeId || it.entryId.toString() === this.likeId.toString()) {
-              this.allLikeSwitch[k] = 1
+              it.isLiked = 1
             }
           })
           this.dialogVisible2 = false
@@ -287,7 +213,7 @@ export default {
         })
       } else {
         elements.forEach(it=>{
-          it.firstChild.style.height = ``
+          it.firstChild.style.height = `0`
         })
       }
 
@@ -306,9 +232,6 @@ export default {
         }
 
         this.allEntryData.push(...ret.data.entryAbsList)
-        this.allEntryData.forEach((it,k)=>{
-          this.allLikeSwitch[k] = it.isLiked
-        })
       }).catch(e=>console.log(e))
       ++this.entryPage
     },
@@ -322,11 +245,19 @@ export default {
           return
         }
         this.recommendEntryData = ret.data.entryAbsList
-        this.recommendEntryData.forEach((it,k)=>{
-          this.recommendedLikeSwitch[k] = it.isLiked
-        })
       }).catch(e=>console.log(e))
       this.getAllEntryData()
+
+      HttpGet("/api/get/select/recommended/EntriesInfo").then(ret=>{
+        let res = ret.data.code.split(" ")
+
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+        this.relatedEntryData = ret.data.entryAbsList
+        console.log(this.relatedEntryData)
+      }).catch(e=>console.log(e))
     }
   },
 
@@ -385,6 +316,11 @@ main {
           border: 1px solid $index-page-main-border-color-grey;
           line-height: 1.5;
           color: $index-page-main-font-color-grey-3;
+          transition: all .2s;
+
+          &:hover {
+            box-shadow: $color-shadow-extra-large;
+          }
 
           > div:first-child {
             width: 48px;
@@ -461,6 +397,11 @@ main {
               margin-right: 16px;
               border-radius: 6px;
               background: $index-page-main-background-color-blue-2;
+              transition: all .2s;
+
+              &:hover {
+                box-shadow: $color-shadow-extra-large;
+              }
 
               img {
                 border-radius: 6px;
@@ -590,6 +531,11 @@ main {
           border: 1px solid $index-page-main-border-color-grey;
           line-height: 1.5;
           color: $index-page-main-font-color-grey-3;
+          transition: all .2s;
+
+          &:hover {
+            box-shadow: $color-shadow-extra-large;
+          }
 
           > div {
             margin: 0 auto;
@@ -657,6 +603,11 @@ main {
               margin-right: 16px;
               border-radius: 6px;
               background: $index-page-main-background-color-blue-2;
+              transition: all .2s;
+
+              &:hover {
+                box-shadow: $color-shadow-extra-large;
+              }
 
               img {
                 border-radius: 6px;
@@ -779,6 +730,11 @@ main {
           border: 1px solid $index-page-main-border-color-grey;
           line-height: 1.5;
           color: $index-page-main-font-color-grey-3;
+          transition: all .2s;
+
+          &:hover {
+            box-shadow: $color-shadow-extra-large;
+          }
 
           > div:first-child {
             width: 48px;
@@ -860,6 +816,11 @@ main {
               margin-right: 16px;
               border-radius: 6px;
               background: $index-page-main-background-color-blue-2;
+              transition: all .2s;
+
+              &:hover {
+                box-shadow: $color-shadow-extra-large;
+              }
 
               img {
                 border-radius: 6px;

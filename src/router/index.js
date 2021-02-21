@@ -20,6 +20,11 @@ const routes = [
         component:()=>import("@/views/topicPage/Index")
     },
     {
+        path: "/topic/entry/:id",
+        name: "forgot",
+        component: ()=>import("@/views/topicPage/entryPage/Index")
+    },
+    {
         path:"/hot",
         name:"hot",
         component:()=>import("@/views/hotPage/Index")
