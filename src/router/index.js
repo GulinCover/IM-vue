@@ -21,7 +21,7 @@ const routes = [
     },
     {
         path: "/topic/entry/:id",
-        name: "forgot",
+        name: "topicEntry",
         component: ()=>import("@/views/topicPage/entryPage/Index")
     },
     {

@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import data from "@/locale/zh_CN.json"
-import "@/plugs/elementui.js"
+import "@/plugins/elementui.js"
 
 Vue.config.productionTip = false
 Vue.prototype.$isCN = true

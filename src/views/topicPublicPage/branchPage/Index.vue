@@ -186,7 +186,6 @@ export default {
             var k = i % 2;
             if (!k) { //偶数
               start0 = params[i].data;
-              console.log(start0)
               start = start0.getFullYear() + "-" + (start0.getMonth() + 1) + "-" + start0.getDate();
             }
             if (k) { //奇数
