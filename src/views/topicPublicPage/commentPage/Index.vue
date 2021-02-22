@@ -219,7 +219,7 @@ export default {
   },
   data() {
     return {
-      locale:this.$locate
+      locale:this.$locale
     }
   }
 }
