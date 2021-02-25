@@ -17,15 +17,18 @@
                 <user-icon :size="'64'"/>
               </div>
               <div class="name">
-                <h3>{{ userData.name }}</h3>
+                <h3>{{ userData.username }}</h3>
                 <p>{{ userData.uuid }}</p>
               </div>
             </div>
             <div class="follow-user-info">
-              <a href="">0 条著述回复</a>
+              <a href="/user/manager?current=notify" target="_blank">{{ userData.topicReplyNumber }} 条著述回复</a>
             </div>
             <div class="comment-info">
-              <a href="">0 条评论回复</a>
+              <a href="/user/manager?current=notify" target="_blank">{{ userData.commentReplyNumber }} 条评论回复</a>
+            </div>
+            <div class="comment-info">
+              <a href="/user/manager?current=notify" target="_blank">{{ userData.talkReplyNumber }} 条评论回复</a>
             </div>
           </div>
         </div>
@@ -34,104 +37,76 @@
           <h2>{{ locale.exploreTitle }}</h2>
 
           <div class="content">
-            <div class="card-wrapper">
-              <div v-if="topicData.picture !== null" class="entry-background">
-                <img :src="topicData.picture" alt="">
+            <div class="card-wrapper" v-for="(item,key) in entryData" :key="key">
+              <div v-if="item.entryAvatar !== null" class="entry-background">
+                <img :src="item.entryAvatar" alt="">
               </div>
 
               <div class="card-title">
                 <div class="row1">
-                  <p>{{ hotTopicData.entryDesc }}</p>
+                  <p>{{ item.entryDesc }}</p>
                 </div>
                 <div class="row2">
                   <div>#</div>
-                  <a href="">{{ hotTopicData.entry }}</a>
+                  <a :href="`/topic/entry/${item.entryId}`" target="_blank">{{ item.entryName }}</a>
                   <div>
                     <star-icon :size="'14'"/>
                     star
                   </div>
                 </div>
               </div>
-              <ul>
-                <li v-for="(item, key) in hotTopicData.content" :key="key">
-                  <div class="topic-title">
-                    <book-open-icon :size="'18'"/>
-                    <h3>
-                      <a href="">{{ item.username }}</a>
-                      /
-                      <a href="">{{ item.topicTitle }}</a>
-                    </h3>
-                  </div>
-                  <div class="topic-desc">{{ item.desc }}</div>
-                </li>
-              </ul>
-              <div class="more">
-                <a :href="hotTopicData.more">{{ locale.moreHotTopic }}</a>
-              </div>
-            </div>
 
-            <div class="card-wrapper">
-              <div class="card-title">
-                <div class="row1">
-                  <p>{{ topicData.entryDesc }}</p>
-                </div>
-                <div class="row2">
-                  <div>#</div>
-                  <a href="">{{ topicData.entry }}</a>
-                  <div>
-                    <star-icon :size="'14'"/>
-                    star
-                  </div>
-                </div>
-              </div>
               <ul>
-                <li v-for="(item, key) in topicData.content" :key="key">
-                  <div class="topic-title">
-                    <book-open-icon :size="'18'"/>
-                    <h3>
-                      <a href="">{{ item.username }}</a>
-                      /
-                      <a href="">{{ item.topicTitle }}</a>
-                    </h3>
-                  </div>
-                  <div class="topic-desc">{{ item.desc }}</div>
-                </li>
+                <div v-for="(it, k) in topicsData" :key="k">
+                  <li v-if="it.entryId.toString() === item.entryId.toString()">
+                    <div class="topic-title">
+                      <book-open-icon :size="'18'"/>
+                      <h3>
+                        <a :href="`/user/${it.userId}`" target="_blank">{{ it.topicUser }}</a>
+                        /
+                        <a :href="`/topic/public/${it.topicId}`" target="_blank">{{ it.topicTitle }}</a>
+                      </h3>
+                    </div>
+                    <div class="topic-desc">{{ it.topicDesc }}</div>
+                  </li>
+                </div>
               </ul>
+
               <div class="more">
-                <a :href="hotTopicData.more">{{ locale.moreHotTopic }}</a>
+                <a :href="`/topic/entry/${item.entryId}`" target="_blank">{{ locale.moreHotTopic }}</a>
               </div>
             </div>
 
             <div class="official-card-wrapper">
-              <div class="left" v-if="officialData.isLeft === '0'">
+              <div class="left" v-if="entryIntro.isLeft === '0'">
                 <div class="picture">
-                  <img :src="officialData.entryPicture" alt="">
+                  <img :src="entryIntro.entryAvatar" alt="">
                 </div>
                 <div class="info">
-                  <h3>{{ officialData.entry }}</h3>
-                  <div class="desc">{{ officialData.entryDesc }}</div>
+                  <h3>{{ entryIntro.entryName }}</h3>
+                  <div class="desc">{{ entryIntro.entryDesc }}</div>
                   <ul class="related-entry">
-                    <li v-for="(item, key) in officialData.relatedEntries" :key="key">
-                      <a href="">{{ item.entry }}</a>
+                    <li v-for="(item, key) in entryIntro.entryAbsList" :key="key">
+                      <a :href="`/topic/entry/${item.entryId}`" target="_blank">{{ item.entryName }}</a>
                     </li>
                   </ul>
                   <div class="more">
-                    <a :href="officialData.more">{{ locale.moreTopic }}</a>
+                    <a :href="`/topic/entry/${entryIntro.entryId}`" target="_blank">{{ locale.moreTopic }}</a>
                     <chevron-right-icon :size="'16'"/>
                   </div>
                 </div>
               </div>
 
-              <div class="vertical" v-if="officialDatas.isLeft === '1'">
-                <a :href="officialDatas.more">
+              <div class="vertical" v-if="entryIntro.isLeft === '1'">
+                <a :href="`/topic/entry/${entryIntro.entryId}`" target="_blank">
                   <div class="picture">
-                    <img :src="officialDatas.entryPicture" alt="">
+                    <img :src="entryIntro.entryAvatar" alt="">
                   </div>
                   <div class="title">
-                    <h3>{{ officialDatas.entry }}</h3>
+                    <h3>{{ entryIntro.entryName }}</h3>
                   </div>
                   <div class="desc">
-                    {{ officialDatas.entryDesc }}
+                    {{ entryIntro.entryDesc }}
                   </div>
                 </a>
               </div>
@@ -140,61 +115,33 @@
         </div>
 
         <div class="right">
-          <div class="hot">
+          <div class="hot" v-for="(item,key) in hotEntryData" :key="key">
             <div>
               <coffee-icon :size="'14'"/>
-              <a>
-                <h3>{{ hotTopcis.entry }}</h3>
-                <p>{{ hotTopcis.entryDesc }}</p>
+              <a :href="`/topic/entry/${item.entryId}`" target="_blank">
+                <h3>{{ item.entryName }}</h3>
+                <p>{{ item.entryDesc }}</p>
               </a>
             </div>
             <ul>
-              <li v-for="(item, key) in hotTopcis.content" :key="key">
-                <div>
-                  <book-open-icon/>
-                  <h3>
-                    <a href="">{{ item.username }}</a>/
-                    <a href="">{{ item.topicTitle }}</a>
-                  </h3>
-                  <a>
-                    <star-icon :size="'14'"/>
-                    1.5k
-                  </a>
-                </div>
-                <p>{{ item.topicDesc }}</p>
-              </li>
+              <div v-for="(it, k) in hotTopcisData" :key="k">
+                <li v-if="it.entryId.toString() === item.entryId.toString()">
+                  <div>
+                    <book-open-icon size="16"/>
+                    <h3>
+                      <a :href="`/user/${it.userId}`" target="_blank">{{ it.topicUser }}</a>/
+                      <a :href="`/topic/public/${it.topicId}`" target="_blank">{{ it.topicTitle }}</a>
+                    </h3>
+                    <a>
+                      <star-icon :size="'14'"/>
+                      {{it.likeNumber}}
+                    </a>
+                  </div>
+                  <p>{{ it.topicDesc }}</p>
+                </li>
+              </div>
             </ul>
-            <a href="">
-              <p>{{ locale.moreHotTopic }}</p>
-              <chevron-right-icon :size="'18'"/>
-            </a>
-          </div>
-
-          <div class="topic">
-            <div>
-              <coffee-icon :size="'14'"/>
-              <a>
-                <h3>{{ hotTopcis.entry }}</h3>
-                <p>{{ hotTopcis.entryDesc }}</p>
-              </a>
-            </div>
-            <ul>
-              <li v-for="(item, key) in hotTopcis.content" :key="key">
-                <div>
-                  <book-open-icon/>
-                  <h3>
-                    <a href="">{{ item.username }}</a>/
-                    <a href="">{{ item.topicTitle }}</a>
-                  </h3>
-                  <a>
-                    <star-icon :size="'14'"/>
-                    1.5k
-                  </a>
-                </div>
-                <p>{{ item.topicDesc }}</p>
-              </li>
-            </ul>
-            <a href="">
+            <a href="/hot" target="_blank">
               <p>{{ locale.moreHotTopic }}</p>
               <chevron-right-icon :size="'18'"/>
             </a>
@@ -216,6 +163,7 @@ import TopBarComponent from "@/common/components/TopBarComponent"
 import {UserIcon, BookOpenIcon, StarIcon, ChevronRightIcon, CoffeeIcon} from "vue-feather-icons"
 import NavComponent from "@/common/components/explorePage/NavComponent";
 import BottomComponent from "@/common/components/explorePage/BottomComponent";
+import {HttpGet, HttpPost} from "@/http/indexPage";
 
 export default {
   name: "Index",
@@ -232,245 +180,135 @@ export default {
       locale: this.$locale,
       pathName: this.$route.name,
 
-      userData: {
-        name: 'alex',
-        uuid: "123",
-      },
+      userData: {},
+      entryData: [],
+      entryIds: [],
+      topicsData: [],
 
-      bottomData: {
-        first: {
-          left: {
-            name: 'GitHub',
-            h3: "请支持GitHub",
-            p: "感谢GitHub的技术支持",
-            url: "https://github.com",
-          },
-          right: [],
-        },
-        second: [
-          {
-            name: "@2021GitHub,Inc,",
-            url: '',
-          },
-          {
-            name: "Terms",
-            url: '',
-          },
-          {
-            name: "Policy",
-            url: '',
-          },
-          {
-            name: "What is WeekType?",
-            url: '',
-          },
-        ],
-      },
+      entryIntro: {},
 
-      hotTopicData: {
-        entryDesc: "this is a entry desc",
-        entryId: '1',
-        entry: "图形",
-        more: "",
-        content: [
-          {
-            userId: "1",
-            username: "alex",
-            topicId: "1",
-            topicTitle: "this is a title",
-            desc: "this is a topic desc"
-          },
-          {
-            userId: "1",
-            username: "alex",
-            topicId: "1",
-            topicTitle: "this is a title",
-            desc: "this is a topic desc"
-          },
-          {
-            userId: "1",
-            username: "alex",
-            topicId: "1",
-            topicTitle: "this is a title",
-            desc: "this is a topic desc"
-          },
-          {
-            userId: "1",
-            username: "alex",
-            topicId: "1",
-            topicTitle: "this is a title",
-            desc: "this is a topic desc"
-          },
-        ]
-      },
+      hotEntryData: [],
+      hotEntryIds: [],
 
-      topicData: {
-        entryDesc: "this is a entry desc",
-        picture: "",
-        entryId: '1',
-        entry: "图形",
-        more: "",
-        content: [
-          {
-            userId: "1",
-            username: "alex",
-            topicId: "1",
-            topicTitle: "this is a title",
-            desc: "this is a topic desc"
-          },
-          {
-            userId: "1",
-            username: "alex",
-            topicId: "1",
-            topicTitle: "this is a title",
-            desc: "this is a topic desc"
-          },
-          {
-            userId: "1",
-            username: "alex",
-            topicId: "1",
-            topicTitle: "this is a title",
-            desc: "this is a topic desc"
-          },
-          {
-            userId: "1",
-            username: "alex",
-            topicId: "1",
-            topicTitle: "this is a title",
-            desc: "this is a topic desc"
-          },
-        ]
-      },
-
-      officialData: {
-        more: "",
-        isLeft: "0",
-        entryId: "1",
-        entry: "预测",
-        entryPicture: "",
-        entryDesc: "this is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry desc",
-        relatedEntries: [
-          {
-            entryId: "2",
-            entry: "推理",
-          },
-          {
-            entryId: "2",
-            entry: "推dsadas理",
-          },
-          {
-            entryId: "2",
-            entry: "推理",
-          },
-          {
-            entryId: "2",
-            entry: "推dsafasfasfa理",
-          },
-          {
-            entryId: "2",
-            entry: "推理",
-          },
-          {
-            entryId: "2",
-            entry: "推理",
-          },
-          {
-            entryId: "2",
-            entry: "推理ffa",
-          },
-          {
-            entryId: "2",
-            entry: "推理",
-          },
-          {
-            entryId: "2",
-            entry: "推fasfas理",
-          },
-          {
-            entryId: "2",
-            entry: "推理fsafasfasfgsa",
-          },
-          {
-            entryId: "2",
-            entry: "推理",
-          },
-          {
-            entryId: "2",
-            entry: "推理",
-          },
-          {
-            entryId: "2",
-            entry: "推adsasa理",
-          },
-          {
-            entryId: "2",
-            entry: "推理",
-          },
-          {
-            entryId: "2",
-            entry: "dasdas推理",
-          },
-          {
-            entryId: "2",
-            entry: "推理dsa",
-          },
-          {
-            entryId: "2",
-            entry: "推理",
-          },
-        ],
-      },
-      officialDatas: {
-        more: "",
-        isLeft: "1",
-        entryId: "1",
-        entry: "预测",
-        entryPicture: "",
-        entryDesc: "this is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry descthis is a entry desc",
-      },
-
-      hotTopcis: {
-        entryId: "1",
-        entry: "测试",
-        entryDesc: "this is a entry desc",
-        content: [
-          {
-            topicId: "1",
-            topicTitle: "this is a topic title",
-            topicDesc: "this is a topic desc",
-            userId: "1",
-            username: "alex",
-          },
-          {
-            topicId: "1",
-            topicTitle: "this is a topic title",
-            topicDesc: "this is a topic desc",
-            userId: "1",
-            username: "alex",
-          },
-          {
-            topicId: "1",
-            topicTitle: "this is a topic title",
-            topicDesc: "this is a topic desc",
-            userId: "1",
-            username: "alex",
-          },
-          {
-            topicId: "1",
-            topicTitle: "this is a topic title",
-            topicDesc: "this is a topic desc",
-            userId: "1",
-            username: "alex",
-          },
-        ]
-      },
-      topics: {}
+      hotTopcisData: []
     }
   },
   methods: {
+    initData() {
+      HttpPost("/api/post/select/userReplyData").then(ret => {
+        let res = ret.data.code.split(" ")
 
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+        this.userData = ret.data
+      }).catch(e => {
+        console.log(e)
+      })
+
+      HttpGet("/api/get/select/random/entryInfos").then(ret => {
+        let res = ret.data.code.split(" ")
+
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+        this.entryData = ret.data.entryAbsList
+        ret.data.entryAbsList.forEach(it => {
+          this.entryIds.push(it.entryId)
+        })
+        this.getTopicInfosByEntryIds()
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+
+    getTopicInfosByEntryIds() {
+      HttpGet("/api/get/select/random/topicInfos/by/entryInfos", {entry_id_list: this.entryIds.toString()}).then(ret => {
+        let res = ret.data.code.split(" ")
+
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+        this.topicsData = ret.data.topicAbsList
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+
+
+
+    getRandomEntryInfoIntro() {
+      if (Math.random() > .5) {
+        HttpGet("/api/get/select/random/entryInfo").then(ret => {
+          let res = ret.data.code.split(" ")
+
+          if (res[0] !== "200") {
+            alert(res[1])
+            return
+          }
+
+          this.entryIntro = ret.data
+        }).catch(e => {
+          console.log(e)
+        })
+      } else {
+        HttpGet("/api/get/select/random/entryInfo/and/related").then(ret => {
+          let res = ret.data.code.split(" ")
+
+          if (res[0] !== "200") {
+            alert(res[1])
+            return
+          }
+
+          this.entryIntro = ret.data
+        }).catch(e => {
+          console.log(e)
+        })
+      }
+    },
+
+
+
+    getTopicInfosByHotEntryIds() {
+      HttpGet("/api/get/select/random/topicInfos/by/entryInfos", {entry_id_list: this.entryIds.toString()}).then(ret => {
+        let res = ret.data.code.split(" ")
+
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+
+        this.hotTopcisData = ret.data.topicAbsList
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+
+    getRandomEntryTopicInfos() {
+      HttpGet("/api/get/select/random/hot/entryInfos").then(ret => {
+        let res = ret.data.code.split(" ")
+
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+        this.hotEntryData = ret.data.entryAbsList
+        ret.data.entryAbsList.forEach(it => {
+          this.hotEntryIds.push(it.entryId)
+        })
+        this.getTopicInfosByHotEntryIds()
+      }).catch(e => {
+        console.log(e)
+      })
+    }
   },
   mounted() {
+    this.initData()
+    this.getRandomEntryInfoIntro()
+    this.getRandomEntryTopicInfos()
   },
 }
 </script>
@@ -817,12 +655,14 @@ main {
         width: 25%;
         padding: 24px 16px;
 
-        > div {
+        .hot {
           margin-bottom: 24px;
           border-radius: 6px;
           border: 1px solid $index-page-main-border-color-grey;
 
           > div {
+            border-top-right-radius: 6px;
+            border-top-left-radius: 6px;
             display: flex;
             justify-content: flex-start;
             align-items: flex-start;
@@ -837,7 +677,7 @@ main {
             }
 
             > a {
-              width: auto;
+              width: 80%;
               margin-left: 8px;
               line-height: 24px;
               font-size: 12px;
@@ -850,6 +690,10 @@ main {
               h3, p {
                 width: 100%;
                 color: $index-page-main-font-color-grey-3;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3; //需要控制的文本行数
+                overflow: hidden;
               }
 
               h3 {
@@ -870,10 +714,16 @@ main {
 
                 svg {
                   margin-right: 4px;
+                  margin-top: 4px;
                 }
 
                 h3 {
                   text-align: start;
+                  width: 60%;
+                  display: -webkit-box;
+                  -webkit-box-orient: vertical;
+                  -webkit-line-clamp: 2; //需要控制的文本行数
+                  overflow: hidden;
 
                   a {
                     margin-right: 4px;
@@ -905,8 +755,13 @@ main {
 
               > p {
                 text-align: start;
+                width: 70%;
                 font-size: 12px;
                 color: $index-page-main-font-color-grey-3;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2; //需要控制的文本行数
+                overflow: hidden;
               }
             }
           }

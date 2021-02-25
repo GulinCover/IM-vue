@@ -32,7 +32,7 @@
         <div class="desc">
           {{locale.indexPageLeftDesc}}
         </div>
-        <a href="">{{locale.certification}}</a>
+        <a @click="()=>this.$message('暂未上线')">{{locale.certification}}</a>
       </div>
     </div>
   </div>

@@ -12,7 +12,7 @@
       <div class="policy-content">
         <div class="editor__content">
           <h2>{{locale.policyPageH2}}</h2>
-          <p v-html="locale.policyPageDesc"></p>
+          <p v-html="policyContent"></p>
         </div>
       </div>
 
@@ -28,6 +28,7 @@
 import TopBar from "@/common/components/TopBarComponent";
 import NavComponent from "@/common/components/topicPage/NavComponent";
 import BottomComponent from "@/common/components/explorePage/BottomComponent";
+import {HttpGet} from "@/http/indexPage";
 export default {
   name: "Index",
   components: {
@@ -38,7 +39,26 @@ export default {
   data() {
     return {
       locale:this.$locale,
+      policyContent: "",
     }
+  },
+  methods: {
+    initData() {
+      HttpGet("/api/get/select/policy").then(ret => {
+        let res = ret.data.code.split(" ")
+
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+        this.policyContent = ret.data.content
+      }).catch(e => {
+        console.log(e)
+      })
+    }
+  },
+  mounted() {
+    this.initData()
   }
 }
 </script>

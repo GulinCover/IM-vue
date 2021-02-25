@@ -33,10 +33,10 @@ export default {
   },
   methods: {
     navFix() {
-      let nav = document.querySelector(".nav-wrapper")
-      let header = document.querySelector("header").getBoundingClientRect()
-      const h = header.top + header.height
       try {
+        let nav = document.querySelector(".nav-wrapper")
+        let header = document.querySelector("header").getBoundingClientRect()
+        const h = header.top + header.height
         if (h <= 0) {
           nav.style.top = `${window.scrollY - header.height}px`
         } else {

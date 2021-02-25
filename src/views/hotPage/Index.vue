@@ -19,7 +19,7 @@
           <div class="header">
             <div class="hot-topic-switch">
               <div class="topic-hot" :class="{'is-active':isTrue}">{{locale.hotPageHot}}</div>
-              <div class="topic-hot" :class="{'is-active':!isTrue}">{{locale.hotPageTopic}}</div>
+              <div @click="()=>this.$router.push('/topic')" class="topic-hot" :class="{'is-active':!isTrue}">{{locale.hotPageTopic}}</div>
             </div>
             <div class="button">
               <div class="event-related">{{locale.hotPageEventRelatedButton}}:{{this.eventRelated === "" ? "Any" : this.eventRelated}}</div>
@@ -30,36 +30,37 @@
 
           <div class="content">
             <ul>
-              <li>
+              <li v-for="(item,key) in hotTopicData" :key="key">
                 <div class="left">
                   <div>
                     <book-open-icon :size="'12'"/>
-                    <a href="">dasdsa</a>/
-                    <a href="">dasda</a>
+                    <a :href="`/user/${item.userId}`" target="_blank">{{item.userName}}</a>/
+                    <a :href="`/topic/public/${item.topicId}`" target="_blank">{{item.topicTitle}}</a>
                   </div>
-                  <p>dasfasfasfas</p>
+                  <p>{{item.topicDesc}}</p>
                   <div>
                     <div>
-                      <div>
+                      <div v-for="(it,k) in item.entryAbsList" :key="k">
                         <span></span>
-                        3D
+                        {{it.entryName}}
                       </div>
                       <div>
                         <star-icon :size="'12'"/>
-                        997
+                        {{item.likeNumber}}
                       </div>
                       <div>
                         <share-2-icon :size="'12'"/>
-                        57
+                        {{item.managerNumber}}
                       </div>
                       <div>
-                        <span>Built By</span>
-                        <span></span>
+                        Built By
+                        <a :href="`/user/${item.userId}`" target="_blank">{{item.userName}}</a>
                       </div>
                     </div>
+
                     <div>
-                      <star-icon :size="'15'"/>
-                      371 Stars Today
+                      <activity-icon :size="'15'"/>
+                      发布于{{item.publicTime}}
                     </div>
                   </div>
                 </div>
@@ -88,7 +89,8 @@
 import TopBar from "@/common/components/TopBarComponent";
 import NavComponent from "@/common/components/topicPage/NavComponent";
 import BottomComponent from "@/common/components/explorePage/BottomComponent";
-import {BookOpenIcon,StarIcon,Share2Icon} from "vue-feather-icons"
+import {ActivityIcon,BookOpenIcon,StarIcon,Share2Icon} from "vue-feather-icons"
+import {HttpGet} from "@/http/indexPage";
 
 export default {
   name: "Index",
@@ -96,46 +98,36 @@ export default {
     BottomComponent,
     NavComponent,
     TopBar,
-    BookOpenIcon,StarIcon,Share2Icon
+    ActivityIcon,BookOpenIcon,StarIcon,Share2Icon
   },
   data() {
     return {
       locale:this.$locale,
-      bottomData: {
-        first: {
-          left: {
-            name: 'GitHub',
-            h3: "请支持GitHub",
-            p: "感谢GitHub的技术支持",
-            url: "https://github.com",
-          },
-          right: [],
-        },
-        second: [
-          {
-            name: "@2021GitHub,Inc,",
-            url: '',
-          },
-          {
-            name: "Terms",
-            url: '',
-          },
-          {
-            name: "Policy",
-            url: '',
-          },
-          {
-            name: "What is WeekType?",
-            url: '',
-          },
-        ],
-      },
+
+      hotTopicData: [],
 
       eventRelated: "",
       entryRelated: "",
       timeRelated: "",
       isTrue: true,
     }
+  },
+  methods: {
+    initData() {
+      HttpGet(`/api/get/select/all/hotTopicInfos?page=0`).then(ret=>{
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          alert(res[1])
+          return
+        }
+
+        this.hotTopicData = ret.data.topicInfoAbsList
+        console.log(ret.data)
+      }).catch(e=>console.log(e))
+    },
+  },
+  mounted() {
+    this.initData()
   }
 }
 </script>
@@ -207,6 +199,10 @@ main {
                 border: 1px solid $index-page-main-border-color-grey;
               }
 
+              &:hover {
+                cursor: pointer;
+              }
+
               &.is-active {
                 background: $index-page-main-background-color-blue;
                 color: white;
@@ -245,6 +241,10 @@ main {
             .topic-hot {
               padding: 5px 16px;
               width: 128px;
+
+              &:hover {
+                cursor: pointer;
+              }
 
               &:first-child {
                 border-bottom-left-radius: 6px;
@@ -299,6 +299,10 @@ main {
             .topic-hot {
               padding: 5px 16px;
               width: 128px;
+
+              &:hover {
+                cursor: pointer;
+              }
 
               &:first-child {
                 border-bottom-left-radius: 6px;
@@ -386,7 +390,7 @@ main {
 
               > div:last-child {
 
-                @media screen and (min-width: $mini) {
+                @media screen and (min-width: $middle) {
                   width: 100%;
                   display: flex;
                   justify-content: space-between;
@@ -404,7 +408,7 @@ main {
                       margin-right: 16px;
                     }
 
-                    div:nth-child(1) {
+                    div {
                       > span {
                         display: inline-block;
                         border-radius: 50%;
@@ -443,6 +447,53 @@ main {
                   }
                 }
 
+                @media screen and (max-width: $middle) and (min-width: $mini) {
+                  width: 100%;
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: center;
+                  flex-wrap: wrap;
+                  font-size: 12px;
+
+                  > div:first-child {
+                    margin-top: 8px;
+                    font-size: 12px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    flex-wrap: wrap;
+
+                    > div {
+                      margin-right: 16px;
+                      > span {
+                        display: inline-block;
+                        border-radius: 50%;
+                        background: #4c92e2;
+                        width: 10px;
+                        height: 10px;
+                      }
+                    }
+
+                    > div:last-child {
+                      display: flex;
+                      justify-content: flex-start;
+                      align-items: center;
+                    }
+                  }
+
+                  > div:last-child {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: relative;
+                    margin-top: 4px;
+
+                    svg {
+                      margin-right: 4px;
+                    }
+                  }
+                }
+
                 @media screen and (max-width: $mini) {
                   width: 100%;
                   display: flex;
@@ -457,12 +508,11 @@ main {
                     display: flex;
                     justify-content: flex-start;
                     align-items: center;
+                    flex-wrap: wrap;
 
                     > div {
                       margin-right: 16px;
-                    }
-
-                    div:nth-child(1) {
+                      margin-top: 4px;
                       > span {
                         display: inline-block;
                         border-radius: 50%;
@@ -476,15 +526,6 @@ main {
                       display: flex;
                       justify-content: flex-start;
                       align-items: center;
-
-                      span:last-child {
-                        display: inline-block;
-                        border-radius: 50%;
-                        width: 16px;
-                        height: 16px;
-                        background: #4c92e2;
-                        margin-left: 4px;
-                      }
                     }
                   }
 
@@ -493,7 +534,7 @@ main {
                     justify-content: center;
                     align-items: center;
                     position: relative;
-                    right: -60px;
+                    margin-top: 4px;
 
                     svg {
                       margin-right: 4px;

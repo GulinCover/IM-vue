@@ -6,8 +6,8 @@ window.localStorage.setItem("user_id","11111111")
 export function HttpGet(url,params=null, headers=null) {
     return axios.get(`${local}${url}`,
         {
-            headers,
             params,
+            headers,
         }
     )
 }
