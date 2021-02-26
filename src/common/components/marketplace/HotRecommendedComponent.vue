@@ -21,7 +21,7 @@
         </a>
       </li>
     </ul>
-    <a href="/marketplace/search?hot=all" target="_blank">浏览全部</a>
+    <a href="/marketplace/search?entry=hot" target="_blank">浏览全部</a>
   </div>
 </template>
 

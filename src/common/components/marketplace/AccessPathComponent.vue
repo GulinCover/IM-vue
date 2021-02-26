@@ -2,8 +2,8 @@
   <div class="access-path-wrapper">
     <div class="access-path">
       <a href="">Marketplace</a>/
-      <a href="">著述</a>/
-      测试
+      <a href="">{{level2}}</a>/
+      {{level3}}
     </div>
   </div>
 </template>
@@ -12,7 +12,8 @@
 export default {
   name: "AccessPathComponent",
   props:[
-
+      "level2",
+      "level3"
   ],
 }
 </script>

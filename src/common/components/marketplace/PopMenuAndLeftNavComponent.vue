@@ -46,30 +46,13 @@
           <div>
             <h3>{{ locale.types }}</h3>
             <ul>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
+              <li @click="jumpTo('type',item)" v-for="(item, key) in sellTypeData" :key="key">{{item}}</li>
             </ul>
           </div>
           <div>
             <h3>{{ locale.categories }}</h3>
             <ul>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
-              <li>dasdsa</li>
+              <li @click="jumpTo('entry_name',item.entryName)" v-for="(item,key) in officialEntryData" :key="key">{{item.entryName}}</li>
             </ul>
           </div>
         </div>

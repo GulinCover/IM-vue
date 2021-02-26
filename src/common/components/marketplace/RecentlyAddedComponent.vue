@@ -21,7 +21,7 @@
         </a>
       </li>
     </ul>
-    <a :href="`/marketplace/search?public_time=desc&recent=all`" target="_blank">浏览全部</a>
+    <a :href="`/marketplace/search?public_time=desc`" target="_blank">浏览全部</a>
   </div>
 </template>
 

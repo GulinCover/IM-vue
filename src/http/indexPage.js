@@ -27,3 +27,30 @@ export function HttpPost(url,data=null, headers=null) {
         }
     )
 }
+
+
+export function merge(src, desc) {
+    let key = Object.keys(desc)
+    let value = Object.values(desc)
+    let lst = src.split("?")
+    lst = lst.filter(s=>s!=="")
+
+    let kms = lst[1].split("&")
+    kms = kms.filter(s=>s!=="")
+    kms.forEach((it, k)=>{
+        if (it.split("=")[0] === key.toString()) {
+            kms[k] = key+"="+value
+        }
+    })
+    let ret = ""
+    kms.forEach(it=>{
+        ret += it+"&"
+    })
+    return lst[0]+"?"+ret
+}
+
+
+
+
+
+
