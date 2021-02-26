@@ -2,30 +2,28 @@
   <div class="official-recommended-wrapper">
     <h3>官方推荐</h3>
     <ul>
-      <li>
-        <div>#</div>
-        <h3>测试</h3>
-      </li>
-      <li>
-        <div>#</div>
-        <h3>测试</h3>
-      </li>
-      <li>
-        <div>#</div>
-        <h3>测试</h3>
-      </li>
-      <li>
-        <div>#</div>
-        <h3>测试</h3>
+      <li @click="jumpTo(item.entryName)" v-for="(item,key) in fourEntryData" :key="key">
+        <div>
+          <img :src="item.entryAvatar" alt="">
+        </div>
+        <h3>{{item.entryName}}</h3>
       </li>
     </ul>
-    <a href="">浏览全部</a>
+    <a href="/marketplace/search?entry=all" target="_blank">浏览全部</a>
   </div>
 </template>
 
 <script>
 export default {
-  name: "OfficialRecommendedComponent"
+  name: "OfficialRecommendedComponent",
+  props: [
+    "fourEntryData"
+  ],
+  methods: {
+    jumpTo(entryName) {
+      window.open(`/marketplace/search?entry_name=${entryName}`,"_blank")
+    }
+  }
 }
 </script>
 
@@ -66,12 +64,19 @@ export default {
         > div {
           margin: 0 auto;
           width: 96px;
+          min-width: 96px;
           height: 96px;
           border-radius: 50%;
           box-shadow: $color-shadow-medium;
           transition: all .15s;
           position: relative;
           top: 0;
+
+          img {
+            width: inherit;
+            height: inherit;
+            border-radius: 50%;
+          }
 
           &:hover {
             top: -5px;
@@ -127,12 +132,19 @@ export default {
         > div {
           margin: 0 auto;
           width: 96px;
+          min-width: 96px;
           height: 96px;
           border-radius: 50%;
           box-shadow: $color-shadow-medium;
           transition: all .15s;
           position: relative;
           top: 0;
+
+          img {
+            width: inherit;
+            height: inherit;
+            border-radius: 50%;
+          }
 
           &:hover {
             top: -5px;
@@ -188,12 +200,19 @@ export default {
         > div {
           margin: 0 auto;
           width: 96px;
+          min-width: 96px;
           height: 96px;
           border-radius: 50%;
           box-shadow: $color-shadow-medium;
           transition: all .15s;
           position: relative;
           top: 0;
+
+          img {
+            width: inherit;
+            height: inherit;
+            border-radius: 50%;
+          }
 
           &:hover {
             top: -5px;

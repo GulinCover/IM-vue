@@ -1,61 +1,38 @@
 <template>
   <div class="entry-recommended-wrapper">
-    <h3>板块推荐</h3>
-    <p>this is a entry desc</p>
+    <h3>{{ele.entryName}}</h3>
+    <p>{{ele.entryDesc}}</p>
     <ul>
-      <li>
-        <a href="">
-          <div class="avatar">#</div>
-          <div class="content">
-            <h3>test</h3>
-            <p>this is a topic desc</p>
-            <p>By 66</p>
-            <p>当前: 66c</p>
+      <li v-for="(item,key) in ele.articleInfoAbsList" :key="key">
+        <a :href="`/marketplace/detail/${item.articleId}`" target="_blank">
+          <div class="avatar">
+            <img :src="item.userAvatar" alt="">
           </div>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <div class="avatar">#</div>
-          <div class="content">
-            <h3>test</h3>
-            <p>this is a topic desc</p>
-            <p>By 66</p>
-            <p>当前: 66c</p>
+          <div class="content" v-if="item.articleType === 'topic'">
+            <h3>{{item.topicTitle}}</h3>
+            <p>{{item.topicDesc}}</p>
+            <p>By {{item.price}}</p>
+            <p>当前: {{item.bidPrice}}c</p>
           </div>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <div class="avatar">#</div>
-          <div class="content">
-            <h3>test</h3>
-            <p>this is a topic desc</p>
-            <p>By 66</p>
-            <p>当前: 66c</p>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <div class="avatar">#</div>
-          <div class="content">
-            <h3>test</h3>
-            <p>this is a topic desc</p>
-            <p>By 66</p>
-            <p>当前: 66c</p>
+          <div class="content" v-else>
+            <h3>{{item.nickname}}</h3>
+            <p>By {{item.price}}</p>
+            <p>当前: {{item.bidPrice}}c</p>
           </div>
         </a>
       </li>
     </ul>
-    <a href="">浏览全部</a>
+    <a :href="`/marketplace/search?entry_name=${ele.entryName}`" target="_blank">浏览全部</a>
   </div>
 
 </template>
 
 <script>
 export default {
-name: "EntryRecommendedComponent"
+  name: "EntryRecommendedComponent",
+  props: [
+    "ele"
+  ]
 }
 </script>
 
@@ -78,6 +55,7 @@ name: "EntryRecommendedComponent"
     }
 
     > p {
+      font-size: 12px;
       text-align: start;
       width: 100%;
       margin-bottom: 10px;
@@ -98,10 +76,22 @@ name: "EntryRecommendedComponent"
 
           .avatar {
             width: 56px;
+            min-width: 56px;
             height: 56px;
             overflow: hidden;
             border-radius: 50%;
-            box-shadow: $color-shadow-large;
+            box-shadow: $color-shadow-medium;
+            transition: all .2s;
+
+            img {
+              width: inherit;
+              height: inherit;
+            }
+
+            &:hover {
+              box-shadow: $color-shadow-extra-large;
+              transform: translateY(-5px);
+            }
           }
 
           .content {
@@ -111,8 +101,14 @@ name: "EntryRecommendedComponent"
             line-height: 1.25;
 
             p {
-              font-size: 14px;
+              font-size: 12px;
+              margin-top: 4px;
               color: $index-page-main-font-color-grey-3;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
             }
           }
         }
@@ -124,6 +120,10 @@ name: "EntryRecommendedComponent"
       text-align: start;
       font-size: 12px;
       margin-bottom: 40px;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
@@ -144,6 +144,7 @@ name: "EntryRecommendedComponent"
     }
 
     > p {
+      font-size: 12px;
       text-align: start;
       width: 100%;
       margin-bottom: 10px;
@@ -164,10 +165,22 @@ name: "EntryRecommendedComponent"
 
           .avatar {
             width: 56px;
+            min-width: 56px;
             height: 56px;
             overflow: hidden;
             border-radius: 50%;
-            box-shadow: $color-shadow-large;
+            box-shadow: $color-shadow-medium;
+            transition: all .2s;
+
+            img {
+              width: inherit;
+              height: inherit;
+            }
+
+            &:hover {
+              box-shadow: $color-shadow-extra-large;
+              transform: translateY(-5px);
+            }
           }
 
           .content {
@@ -177,8 +190,14 @@ name: "EntryRecommendedComponent"
             line-height: 1.25;
 
             p {
-              font-size: 14px;
+              font-size: 12px;
+              margin-top: 4px;
               color: $index-page-main-font-color-grey-3;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
             }
           }
         }
@@ -190,6 +209,10 @@ name: "EntryRecommendedComponent"
       text-align: start;
       font-size: 12px;
       margin-bottom: 40px;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
@@ -210,6 +233,7 @@ name: "EntryRecommendedComponent"
     }
 
     > p {
+      font-size: 12px;
       text-align: start;
       width: 100%;
       margin-bottom: 10px;
@@ -230,10 +254,22 @@ name: "EntryRecommendedComponent"
 
           .avatar {
             width: 56px;
+            min-width: 56px;
             height: 56px;
             overflow: hidden;
             border-radius: 50%;
-            box-shadow: $color-shadow-large;
+            box-shadow: $color-shadow-medium;
+            transition: all .2s;
+
+            img {
+              width: inherit;
+              height: inherit;
+            }
+
+            &:hover {
+              box-shadow: $color-shadow-extra-large;
+              transform: translateY(-5px);
+            }
           }
 
           .content {
@@ -243,8 +279,14 @@ name: "EntryRecommendedComponent"
             line-height: 1.25;
 
             p {
-              font-size: 14px;
+              font-size: 12px;
+              margin-top: 4px;
               color: $index-page-main-font-color-grey-3;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
             }
           }
         }
@@ -256,6 +298,10 @@ name: "EntryRecommendedComponent"
       text-align: start;
       font-size: 12px;
       margin-bottom: 40px;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

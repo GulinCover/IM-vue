@@ -8,30 +8,13 @@
               <div>
                 <h3>{{ locale.types }}</h3>
                 <ul>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
+                  <li @click="jumpTo('type',item)" v-for="(item, key) in sellTypeData" :key="key">{{item}}</li>
                 </ul>
               </div>
               <div>
                 <h3>{{ locale.categories }}</h3>
                 <ul>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
-                  <li>dasdsa</li>
+                  <li @click="jumpTo('entry_name',item.entryName)" v-for="(item,key) in officialEntryData" :key="key">{{item.entryName}}</li>
                 </ul>
               </div>
             </div>
@@ -109,6 +92,10 @@ export default {
     SearchComponent,
     XIcon
   },
+  props: [
+      "sellTypeData",
+      "officialEntryData",
+  ],
   data() {
     return {
       locale: this.$locale,
@@ -131,7 +118,35 @@ export default {
 
     closePopMenu() {
       this.isPopMenuActive = false
-    }
+    },
+
+    jumpTo(search,content) {
+      let url = "/marketplace/search?"
+
+      let lst = this.$route.fullPath.split("?")
+      if (lst.length > 1) {
+        let flag = true
+        let query = lst[1]
+        let list = query.split("&")
+        list.forEach(it=>{
+          if (search === it.split("=")[0]) {
+            url += search+"="+content+"&"
+            flag = false
+          } else {
+            url += it.split("=")[0] +"="+it.split("=")[1]+"&"
+          }
+        })
+        if (flag) {
+          url += search+"="+content+"&"
+        }
+        url = url.substr(0,url.length - 1)
+      } else {
+        url += search +"="+content
+      }
+
+      window.open(url,"_self")
+    },
+
   },
 
   mounted() {
@@ -174,8 +189,14 @@ export default {
                 margin-bottom: 36px;
               }
 
+              ::-webkit-scrollbar {
+                display: none;
+              }
+
               ul {
                 margin-bottom: 24px;
+                max-height: 640px;
+                overflow-y: scroll;
 
                 li {
                   padding: 8px 16px;
