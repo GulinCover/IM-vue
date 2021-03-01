@@ -97,6 +97,10 @@ export default {
           }
         }
       }
+      else {
+        urlQueryCompleteSet.push(inputParams.toString())
+      }
+
       urlQueryCompleteSet = urlQueryCompleteSet.filter(s=>{
         return s !== ""
       })

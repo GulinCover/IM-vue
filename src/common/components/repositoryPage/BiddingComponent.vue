@@ -138,9 +138,11 @@
 <script>
 export default {
   name: "BiddingComponent",
-  props: [
-      "locale"
-  ],
+  data() {
+    return {
+      locale:this.$locale
+    }
+  }
 }
 </script>
 

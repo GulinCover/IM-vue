@@ -138,9 +138,11 @@
 <script>
 export default {
   name: "FailedComponent",
-  props: [
-      "locale"
-  ]
+  data() {
+    return {
+      locale:this.$locale
+    }
+  }
 }
 </script>
 

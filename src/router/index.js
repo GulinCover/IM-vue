@@ -52,7 +52,55 @@ const routes = [
     {
         path:"/repository",
         name:"repository",
-        component:()=>import("@/views/repositoryPage/Index")
+        redirect:"/repository/overview",
+        component:()=>import("@/views/repositoryPage/Index"),
+        children: [
+            {
+                path:"public",
+                name:"public",
+                component:()=>import("@/common/components/repositoryPage/PublicTopicComponent")
+            },
+            {
+                path:"comment",
+                name:"comment",
+                component:()=>import("@/common/components/repositoryPage/PublicCommentComponent")
+            },
+            {
+                path:"wallet",
+                name:"wallet",
+                component:()=>import("@/common/components/repositoryPage/WalletComponent")
+            },
+            {
+                path:"selling",
+                name:"selling",
+                component:()=>import("@/common/components/repositoryPage/SellingComponent")
+            },
+            {
+                path:"success",
+                name:"success",
+                component:()=>import("@/common/components/repositoryPage/PhotographedComponent")
+            },
+            {
+                path:"failed",
+                name:"failed",
+                component:()=>import("@/common/components/repositoryPage/FailedComponent")
+            },
+            {
+                path:"biding",
+                name:"biding",
+                component:()=>import("@/common/components/repositoryPage/BiddingComponent")
+            },
+            {
+                path:"repository",
+                name:"repository",
+                component:()=>import("@/common/components/repositoryPage/RepositoryComponent")
+            },
+            {
+                path:"overview",
+                name:"overview",
+                component:()=>import("@/common/components/repositoryPage/OverviewComponent")
+            },
+        ]
     },
     {
         path: "/user/manager",

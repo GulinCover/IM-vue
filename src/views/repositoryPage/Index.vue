@@ -7,14 +7,16 @@
     <main>
       <div class="user-info-wrapper">
         <div class="first">
-          <div class="avatar"></div>
+          <div class="avatar">
+            <img :src="userData.userAvatar" alt="">
+          </div>
           <div class="desc">
-            <h3>Alex</h3>
-            <p>Alex</p>
+            <h3>{{userData.username}}</h3>
+            <p>{{userData.UUID}}</p>
           </div>
         </div>
         <div class="two">
-          <p>this is a user desc</p>
+          <p>{{userData.userDesc}}</p>
         </div>
         <div class="three">{{ locale.profileEditor }}</div>
       </div>
@@ -30,63 +32,22 @@
 
       <div class="content">
         <div class="left">
-          <div class="avatar"></div>
-          <h3>Alex</h3>
-          <p>this is a user desc</p>
+          <div class="avatar">
+            <img :src="userData.userAvatar" alt="">
+          </div>
+          <h3>{{userData.username}}</h3>
+          <p>{{userData.userDesc}}</p>
           <div class="profile-button">
             {{ locale.profileEditor }}
           </div>
           <p>
             <map-pin-icon :size="'12'"/>
-            <span>ShangHai</span>
+            <span>{{userData.location}}</span>
           </p>
         </div>
 
         <div class="right">
-          <div v-if="locale.repositoryPageNav[1].alias === this.pathName">
-            <public-topic-component
-                :locale="locale"
-            />
-          </div>
-          <div v-else-if="locale.repositoryPageNav[2].alias === this.pathName">
-            <public-comment-component
-                :locale="locale"
-            />
-          </div>
-          <div v-else-if="locale.repositoryPageNav[3].alias === this.pathName">
-            <wallet-component
-                :locale="locale"
-            />
-          </div>
-          <div v-else-if="locale.repositoryPageNav[4].alias === this.pathName">
-            <selling-component
-              :locale="locale"
-              />
-          </div>
-          <div v-else-if="locale.repositoryPageNav[5].alias === this.pathName">
-            <photographed-component
-              :locale="locale"
-              />
-          </div>
-          <div v-else-if="locale.repositoryPageNav[6].alias === this.pathName">
-            <failed-component
-              :locale="locale"
-              />
-          </div>
-          <div v-else-if="locale.repositoryPageNav[7].alias === this.pathName">
-            <bidding-component
-              :locale="locale"
-              />
-          </div>
-          <div v-else-if="locale.repositoryPageNav[8].alias === this.pathName">
-            <repository-component
-                :locale="locale"
-            />
-          </div>
-          <div v-else>
-            <overview-component/>
-          </div>
-
+          <router-view/>
         </div>
       </div>
 
@@ -104,33 +65,16 @@
 import TopBar from "@/common/components/TopBarComponent";
 import BottomComponent from "@/common/components/marketplace/BottomComponent";
 import NavComponent from "@/common/components/repositoryPage/NavComponent";
-import PublicTopicComponent from "@/common/components/repositoryPage/PublicTopicComponent"
 import {MapPinIcon} from "vue-feather-icons"
-import OverviewComponent from "@/common/components/repositoryPage/OverviewComponent";
-import PublicCommentComponent from "@/common/components/repositoryPage/PublicCommentComponent";
-import WalletComponent from "@/common/components/repositoryPage/WalletComponent";
-import SellingComponent from "@/common/components/repositoryPage/SellingComponent";
-import PhotographedComponent from "@/common/components/repositoryPage/PhotographedComponent";
-import FailedComponent from "@/common/components/repositoryPage/FailedComponent";
-import BiddingComponent from "@/common/components/repositoryPage/BiddingComponent";
-import RepositoryComponent from "@/common/components/repositoryPage/RepositoryComponent";
+import {HttpPost} from "@/http/indexPage";
 
 export default {
   name: "Index",
   components: {
-    RepositoryComponent,
-    FailedComponent,
-    PhotographedComponent,
-    OverviewComponent,
     NavComponent,
     BottomComponent,
     TopBar,
     MapPinIcon,
-    PublicTopicComponent,
-    PublicCommentComponent,
-    WalletComponent,
-    SellingComponent,
-    BiddingComponent,
   },
   data() {
     return {
@@ -139,17 +83,18 @@ export default {
       height: null,
 
       pathName: "overview",
+      placeholderHeight: "",
+
+      userData: Object
     }
   },
 
   methods: {
     fix() {
-      if (window.innerWidth <= 767) {
-        try{
-          this.headerBounding = document.querySelector(".placeholder").getBoundingClientRect()
-        } catch (e) {
-          console.log(e)
-        }
+      try{
+        this.headerBounding = document.querySelector(".placeholder").getBoundingClientRect()
+      } catch (e) {
+        console.log(e)
       }
     },
 
@@ -162,11 +107,28 @@ export default {
       ) this.pathName = this.$route.query.current
     },
 
+    initUserData() {
+      HttpPost(`/api/post/select/me/userInfo`).then(ret => {
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          this.$message.error(res[1])
+          return
+        }
 
+        this.userData = ret.data
+      }).catch(e => console.log(e))
+    },
+    initData() {
+      this.initUserData()
+    }
   },
   mounted() {
     this.navSwitch()
-
+    this.initData()
+    window.onresize = ()=>{
+      this.fix()
+      this.navSwitch()
+    }
   }
 }
 </script>
@@ -202,11 +164,14 @@ main {
 
         .avatar {
           margin-right: 16px;
-          flex: 1;
-          background: #4f86bf;
           height: 16vw;
           border-radius: 50%;
           overflow: hidden;
+
+          img {
+            width: inherit;
+            height: inherit;
+          }
         }
 
         .desc {
@@ -226,6 +191,11 @@ main {
         border-radius: 6px;
         border: 1px solid $index-page-main-border-color-grey;
         background: $index-page-main-background-color-grey;
+
+        &:hover {
+          cursor: pointer;
+          box-shadow: $color-shadow-medium;
+        }
       }
     }
   }
@@ -255,8 +225,12 @@ main {
           width: 100%;
           height: 0;
           padding-bottom: 100%;
-          background: #4e4ed9;
           border-radius: 50%;
+          overflow: hidden;
+
+          img {
+            width: inherit;
+          }
         }
 
         h3 {
@@ -273,6 +247,11 @@ main {
           border: 1px solid $index-page-main-border-color-grey;
           padding: 5px 16px;
           text-align: center;
+
+          &:hover {
+            cursor: pointer;
+            box-shadow: $color-shadow-medium;
+          }
         }
 
       }

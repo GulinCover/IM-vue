@@ -10,12 +10,13 @@
 </template>
 
 <script>
+
 export default {
   name: "NavComponent",
   props: [
     "nav",
     "headerBounding",
-      "height"
+    "height"
   ],
   methods: {
     navFix() {
@@ -49,36 +50,33 @@ export default {
       window.scrollTo({
         top:0,
       })
-      console.log(123)
     },
 
     jump(web) {
-      if (web===this.$route.query.current) return
-      window.open(`${this.$route.name}?current=${web}`,"_self")
+      if (web === this.$route.name) return
+      window.open(`/repository/${web}`,"_self")
+      this.$nextTick(()=>this.isNavActive())
+    },
+
+    isNavActive() {
+      let eles = document.querySelectorAll(".nav div")
+      eles.forEach(item => item.classList.remove("is-active"))
+
+      const current = this.$route.name
+
+      for (let item of this.nav) {
+        if (item.alias === current) {
+          this.$refs[current][0].classList.add("is-active")
+          return
+        }
+      }
     }
   },
   mounted() {
-
     window.addEventListener("beforeunload", this.fresh)
     window.addEventListener("scroll", this.navFix)
-    let eles = document.querySelectorAll(".nav div")
-    eles.forEach(item => item.classList.remove("is-active"))
-
-    const current = this.$route.query.current
-    if (current === undefined || current === null || current === "") {
-      eles[1].classList.add("is-active")
-      return
-    }
-
-    for (let item of this.nav) {
-      if (item.alias === current) {
-        this.$refs[current][0].classList.add("is-active")
-        return
-      }
-    }
-
-    eles[1].classList.add("is-active")
-  }
+    this.isNavActive()
+  },
 }
 </script>
 

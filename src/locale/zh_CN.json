@@ -222,6 +222,25 @@
 
 
 
+  "articleDetailPage": "",
+  "report": "举报",
+  "manager" :"管理者",
+  "historyPrice": "历史价格",
+  "buyPolicy": [
+    "一经购买,不得退还.",
+    "购买后,物品所有权全权归拍得者所有.",
+    "竞拍中的物品只能有5个,请谨慎竞价.",
+    "竞价失败的物品,将按照竞拍次数退还一定比例的硬币.",
+    "竞价成功的物品,使用时将消耗竞拍价的5%硬币作为使用费."
+  ],
+  "confirmPrice":"输入您的竞拍价格",
+  "confirmBidding": "确认竞拍",
+  "confirmTip": "竞拍前请确认您的余额,避免造成不必要的麻烦.",
+  "confirmTerms": "每天可参与竞价时间为9:08~10:08,物品上架时间最长为一周.每天晚上10点半左右,将自动统计物品当前最高竞价.",
+
+
+
+
   "userManagerAccountSettings": "账户设置",
   "userManagerAccountSettingsNav": [
     {

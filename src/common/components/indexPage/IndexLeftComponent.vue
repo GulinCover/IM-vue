@@ -70,7 +70,7 @@ export default {
       HttpPost("/api/post/select/me/topics").then(ret=>{
         let lst = ret.data.code.split(" ")
         if (lst[0] !== "200") {
-          alert(lst[1])
+          this.$message.error(lst[1])
           return
         }
         this.topicsData = ret.data.topicAbsList

@@ -42,7 +42,7 @@
             </ul>
           </div>
         </div>
-        <div class="issues is-hover" @click="linkTo('/repository')">{{ locale.topBarRepository }}</div>
+        <div class="issues is-hover" @click="linkTo('/repository/overview')">{{ locale.topBarRepository }}</div>
         <div class="marketplace is-hover" @click="linkTo('/marketplace')">{{ locale.topBarMarketplace }}</div>
         <div class="explore is-hover" @click="linkTo('/explore')">{{ locale.topBarExplore }}</div>
       </div>
@@ -202,7 +202,7 @@ export default {
 
     linkTo(web) {
       if (this.$route.path === web) return
-      this.$router.push(web)
+      window.open(web,"_self")
     },
 
     logout() {

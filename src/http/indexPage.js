@@ -7,7 +7,7 @@ export function HttpGet(url,params=null, headers=null) {
     return axios.get(`${local}${url}`,
         {
             params,
-            headers,
+            headers
         }
     )
 }

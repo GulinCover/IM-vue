@@ -244,7 +244,7 @@ export default {
       HttpGet(`/api/get/select/official/entryInfos`).then(ret => {
         let res = ret.data.code.split(" ")
         if (res[0] !== "200") {
-          alert(res[1])
+          this.$message.error(res[1])
           return
         }
 

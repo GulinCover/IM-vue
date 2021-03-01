@@ -66,9 +66,11 @@ export default {
   components: {
     StarIcon,
   },
-  props: [
-      "locale"
-  ]
+  data() {
+    return {
+      locale:this.$locale
+    }
+  }
 }
 </script>
 

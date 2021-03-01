@@ -167,9 +167,11 @@ export default {
   components: {
     PlusCircleIcon,MinusCircleIcon,
   },
-  props:[
-      "locale"
-  ],
+  data() {
+    return {
+      locale:this.$locale
+    }
+  }
 }
 </script>
 

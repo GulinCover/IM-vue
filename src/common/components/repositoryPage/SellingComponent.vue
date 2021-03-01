@@ -138,9 +138,11 @@
 <script>
 export default {
   name: "SellingComponent",
-  props: [
-      "locale"
-  ]
+  data() {
+    return {
+      locale:this.$locale
+    }
+  }
 }
 </script>
 

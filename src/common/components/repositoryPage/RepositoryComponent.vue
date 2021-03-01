@@ -131,12 +131,10 @@ export default {
   name: "RepositoryComponent",
   components: {
   },
-  props: [
-      "locale"
-  ],
   data() {
     return {
-      timer: null
+      timer: null,
+      locale:this.$locale
     }
   },
   methods: {
