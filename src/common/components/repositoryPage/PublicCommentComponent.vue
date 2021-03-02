@@ -1,39 +1,28 @@
 <template>
   <div class="public-comment-wrapper">
     <div class="header">
-      <div class="search">
-        <input type="text" :placeholder="locale.publicTopicPageSearchPlaceholder">
-      </div>
-      <div class="tag">
-        <div>
-          <span>
-          标签:ALL
-          </span>
-        </div>
-        <div>
-          <span>模糊查找:无</span>
-        </div>
-        <div>
-          <span>
-            NEW
-          </span>
-        </div>
-      </div>
+      <search-component
+          :url="'/api/post/select/search/me/publicComment'"
+          :show-entry-list-data="showEntryListData"
+          @searchResultData="ret=>showCommentListData = ret.commentInfoAbsList"
+      />
     </div>
 
     <ul>
-      <li>
+      <li v-for="(item, key) in showCommentListData" :key="key">
         <div class="left">
-          <h3 class="title">topic title</h3>
-          <div class="comment">hello</div>
+          <h3 class="title">{{item.topicTitle}}</h3>
+          <div class="comment">{{item.commentContent}}</div>
           <div class="bottom">
-            <span>3D</span>
-            <span>回复于6天前</span>
+            <span v-for="(it,k) in item.entryAbsList" :key="k">
+              {{it.entryName}}
+            </span>
+            <span>回复于{{item.commentTime}}天前</span>
           </div>
         </div>
 
         <div class="right">
-          <star-icon :size="'16'"/>30
+          <star-icon :size="'16'"/>{{item.likeNumber}}
         </div>
       </li>
       <li>
@@ -55,21 +44,70 @@
         </div>
       </li>
     </ul>
+
+    <div class="page-button">
+      <page-button-component
+          :total-page="20"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import {StarIcon} from "vue-feather-icons";
+import PageButtonComponent from "@/common/components/PageButtonComponent";
+import SearchComponent from "@/common/components/repositoryPage/SearchComponent";
+import {HttpPost} from "@/http/indexPage";
 
 export default {
   name: "PublicCommentComponent",
   components: {
+    SearchComponent,
+    PageButtonComponent,
     StarIcon,
   },
   data() {
     return {
-      locale:this.$locale
+      locale: this.$locale,
+
+      showEntryListData: Object,
+
+      searchResultData: Object,
+
+      showCommentListData: [],
     }
+  },
+  methods: {
+    initShowCommentListData() {
+      HttpPost(`/api/post/select/me/publicComment`).then(ret=>{
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          this.$message.error(res[1])
+          return
+        }
+
+        this.showCommentListData = ret.data.commentInfoAbsList
+      }).catch(e=>console.log(e))
+    },
+    initEntryListData() {
+      HttpPost(`/api/post/select/me/publicComment/all/entry`).then(ret=>{
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          this.$message.error(res[1])
+          return
+        }
+
+        this.showEntryListData = ret.data.entryAbsList
+      }).catch(e=>console.log(e))
+    },
+
+    initData() {
+      this.initEntryListData()
+      this.initShowCommentListData()
+    }
+  },
+  mounted() {
+    this.initData()
   }
 }
 </script>
@@ -78,108 +116,6 @@ export default {
 @import "~@/api/GlobalApi.scss";
 
 .public-comment-wrapper {
-  @media screen and (min-width: $middle) {
-    .header {
-      padding: 16px 0;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      border-bottom: 1px solid $index-page-main-border-color-grey;
-
-      .search {
-        border-radius: 6px;
-        border: 1px solid $index-page-main-border-color-grey;
-        padding: 5px 12px;
-        margin-right: 16px;
-        width: 100%;
-
-        input {
-          border: none;
-          width: 100%;
-          height: 100%;
-        }
-      }
-
-      .tag {
-        font-size: 12px;
-        min-width: 270px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        div {
-          span {
-            border-radius: 6px;
-            border: 1px solid $index-page-main-border-color-grey;
-            padding: 5px 16px;
-          }
-
-          &:first-child {
-            margin-right: 8px;
-          }
-
-          &:last-child {
-            margin-left: 16px;
-          }
-        }
-      }
-    }
-  }
-
-  @media screen and (max-width: $middle) {
-    .header {
-      padding: 16px 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      border-bottom: 1px solid $index-page-main-border-color-grey;
-
-      .search {
-        border-radius: 6px;
-        border: 1px solid $index-page-main-border-color-grey;
-        padding: 5px 12px;
-        margin-right: 16px;
-        width: 100%;
-        margin-bottom: 16px;
-
-        input {
-          border: none;
-          width: 100%;
-          height: 100%;
-        }
-      }
-
-      .tag {
-        width: 100%;
-        font-size: 12px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        div {
-          span {
-            border-radius: 6px;
-            border: 1px solid $index-page-main-border-color-grey;
-            padding: 5px 16px;
-          }
-
-          &:first-child {
-            margin-right: 8px;
-          }
-
-          &:nth-child(2) {
-            flex: auto;
-          }
-
-          &:last-child {
-            margin-left: 16px;
-          }
-        }
-      }
-    }
-  }
-
   > ul {
     > li {
       padding: 24px 0;
@@ -227,6 +163,12 @@ export default {
       }
 
     }
+  }
+
+  .page-button {
+    padding-top: 40px;
+    display: flex;
+    justify-content: center;
   }
 }
 

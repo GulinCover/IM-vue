@@ -42,13 +42,7 @@ export default {
       }
     },
     initPage() {
-      let eles = document.querySelectorAll(`span.page-number`)
-      eles.forEach(it => it.classList.remove("is-active"))
-      if (this.$route.query.page === undefined || this.$route.query.page === "") {
-        document.querySelector(`span.page-number${1}`).classList.add("is-active")
-      } else {
-        document.querySelector(`span.page-number${this.$route.query.page}`).classList.add("is-active")
-      }
+      document.querySelector(`span.page-number${this.$route.query.page}`).classList.add("is-active")
     },
     initPageNumber(maxPage) {
       let current = this.$route.query.page === undefined || this.$route.query.page === "" ? 0 : this.$route.query.page
@@ -102,6 +96,10 @@ export default {
   },
   mounted() {
     this.initData()
+  },
+  beforeCreate() {
+    if (this.$route.query.page === undefined || this.$route.query.page === "")
+      this.$router.push(`${this.$route.path}?page=1`)
   }
 }
 </script>

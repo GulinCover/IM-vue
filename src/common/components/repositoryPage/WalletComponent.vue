@@ -1,176 +1,104 @@
 <template>
   <div class="wallet-wrapper">
     <div class="header">
-      <div class="search">
-        <input type="text" :placeholder="locale.publicTopicPageSearchPlaceholder">
-      </div>
-      <div class="tag">
-        <div>
-          <span>
-          标签:ALL
-          </span>
-        </div>
-        <div>
-          <span>模糊查找:无</span>
-        </div>
-        <div>
-          <span>
-            NEW
-          </span>
-        </div>
-      </div>
+      <search-component
+          :url="'/api/post/select/search/me/publicComment'"
+          :show-entry-list-data="showEntryListData"
+          @searchResultData="ret=>showBillListData = ret"
+      />
     </div>
 
     <ul>
       <div>
         <div class="money-left">Balance</div>
-        <div class="money-right">$729</div>
+        <div class="money-right">${{showBillListData.balance}}</div>
       </div>
-      <li>
-        <div class="left">
-          <plus-circle-icon/>
-        </div>
-        <div class="middle">
-          <h3>topic</h3>
-          <p>
-            <span>账单号:asfe241212fasf2412</span>
-            <span>类型:著述</span>
-          </p>
-          <div class="buy-time">售卖于10天前</div>
-        </div>
-        <div class="right-plus">
-          +$200
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <minus-circle-icon/>
-        </div>
-        <div class="middle">
-          <h3>nickname</h3>
-          <p>
-            <span>账单号:asfe241212fasf2412</span>
-            <span>类型:著述</span>
-          </p>
-          <div class="buy-time">售卖于10天前</div>
-        </div>
-        <div class="right-sub">
-          -$200
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <plus-circle-icon/>
-        </div>
-        <div class="middle">
-          <h3>topic</h3>
-          <p>
-            <span>账单号:asfe241212fasf2412</span>
-            <span>类型:著述</span>
-          </p>
-          <div class="buy-time">售卖于10天前</div>
-        </div>
-        <div class="right-plus">
-          +$200
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <minus-circle-icon/>
-        </div>
-        <div class="middle">
-          <h3>nickname</h3>
-          <p>
-            <span>账单号:asfe241212fasf2412</span>
-            <span>类型:著述</span>
-          </p>
-          <div class="buy-time">售卖于10天前</div>
-        </div>
-        <div class="right-sub">
-          -$200
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <plus-circle-icon/>
-        </div>
-        <div class="middle">
-          <h3>topic</h3>
-          <p>
-            <span>账单号:asfe241212fasf2412</span>
-            <span>类型:著述</span>
-          </p>
-          <div class="buy-time">售卖于10天前</div>
-        </div>
-        <div class="right-plus">
-          +$200
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <minus-circle-icon/>
-        </div>
-        <div class="middle">
-          <h3>nickname</h3>
-          <p>
-            <span>账单号:asfe241212fasf2412</span>
-            <span>类型:著述</span>
-          </p>
-          <div class="buy-time">售卖于10天前</div>
-        </div>
-        <div class="right-sub">
-          -$200
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <plus-circle-icon/>
-        </div>
-        <div class="middle">
-          <h3>topic</h3>
-          <p>
-            <span>账单号:asfe241212fasf2412</span>
-            <span>类型:著述</span>
-          </p>
-          <div class="buy-time">售卖于10天前</div>
-        </div>
-        <div class="right-plus">
-          +$200
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <minus-circle-icon/>
-        </div>
-        <div class="middle">
-          <h3>nickname</h3>
-          <p>
-            <span>账单号:asfe241212fasf2412</span>
-            <span>类型:著述</span>
-          </p>
-          <div class="buy-time">售卖于10天前</div>
-        </div>
-        <div class="right-sub">
-          -$200
-        </div>
-      </li>
 
+      <li v-for="(item,key) in showBillListData.billAbsList" :key="key">
+        <div class="left" v-if="item.positive === '+'">
+          <plus-circle-icon/>
+        </div>
+        <div class="left" v-else>
+          <minus-circle-icon/>
+        </div>
+        <div class="middle">
+          <h3>{{item.topicTitle}}</h3>
+          <p>
+            <span>账单号:{{item.billUUID}}</span>
+            <span>类型:{{item.type}}</span>
+          </p>
+          <div class="buy-time" v-if="item.positive === '+'">售卖于{{item.sellingTime}}天前</div>
+          <div class="buy-time" v-else>购买于{{item.buyTime}}天前</div>
+        </div>
+        <div class="right-plus" v-if="item.positive === '+'">
+          +${{item.getPrice}}c
+        </div>
+        <div class="right-sub" v-else>
+          -${{item.getPrice}}c
+        </div>
+      </li>
     </ul>
+
+    <page-button-component
+        total-page="20"
+    />
   </div>
 </template>
 
 <script>
-import {PlusCircleIcon,MinusCircleIcon} from "vue-feather-icons";
+import {PlusCircleIcon, MinusCircleIcon} from "vue-feather-icons";
+import PageButtonComponent from "@/common/components/PageButtonComponent";
+import SearchComponent from "@/common/components/repositoryPage/SearchComponent";
+import {HttpPost} from "@/http/indexPage";
 
 export default {
   name: "WalletComponent",
   components: {
-    PlusCircleIcon,MinusCircleIcon,
+    PageButtonComponent,
+    SearchComponent,
+    PlusCircleIcon, MinusCircleIcon,
   },
   data() {
     return {
-      locale:this.$locale
+      locale: this.$locale,
+
+      showEntryListData: Object,
+
+      showBillListData: [],
+      balance: Object
     }
+  },
+  methods: {
+    initShowBillListData() {
+      HttpPost(`/api/post/select/me/billInfos`).then(ret=>{
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          this.$message.error(res[1])
+          return
+        }
+
+        this.showBillListData = ret.data
+      }).catch(e=>console.log(e))
+    },
+    initEntryListData() {
+      HttpPost(`/api/post/select/me/publicComment/all/entry`).then(ret=>{
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          this.$message.error(res[1])
+          return
+        }
+
+        this.showEntryListData = ret.data.entryAbsList
+      }).catch(e=>console.log(e))
+    },
+
+    initData() {
+      this.initEntryListData()
+      this.initShowBillListData()
+    }
+  },
+  mounted() {
+    this.initData()
   }
 }
 </script>
@@ -179,108 +107,6 @@ export default {
 @import "~@/api/GlobalApi.scss";
 
 .wallet-wrapper {
-  @media screen and (min-width: $middle) {
-    .header {
-      padding: 16px 0;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      border-bottom: 1px solid $index-page-main-border-color-grey;
-
-      .search {
-        border-radius: 6px;
-        border: 1px solid $index-page-main-border-color-grey;
-        padding: 5px 12px;
-        margin-right: 16px;
-        width: 100%;
-
-        input {
-          border: none;
-          width: 100%;
-          height: 100%;
-        }
-      }
-
-      .tag {
-        font-size: 12px;
-        min-width: 270px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        div {
-          span {
-            border-radius: 6px;
-            border: 1px solid $index-page-main-border-color-grey;
-            padding: 5px 16px;
-          }
-
-          &:first-child {
-            margin-right: 8px;
-          }
-
-          &:last-child {
-            margin-left: 16px;
-          }
-        }
-      }
-    }
-  }
-
-  @media screen and (max-width: $middle) {
-    .header {
-      padding: 16px 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      border-bottom: 1px solid $index-page-main-border-color-grey;
-
-      .search {
-        border-radius: 6px;
-        border: 1px solid $index-page-main-border-color-grey;
-        padding: 5px 12px;
-        margin-right: 16px;
-        width: 100%;
-        margin-bottom: 16px;
-
-        input {
-          border: none;
-          width: 100%;
-          height: 100%;
-        }
-      }
-
-      .tag {
-        width: 100%;
-        font-size: 12px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        div {
-          span {
-            border-radius: 6px;
-            border: 1px solid $index-page-main-border-color-grey;
-            padding: 5px 16px;
-          }
-
-          &:first-child {
-            margin-right: 8px;
-          }
-
-          &:nth-child(2) {
-            flex: auto;
-          }
-
-          &:last-child {
-            margin-left: 16px;
-          }
-        }
-      }
-    }
-  }
-
   > ul {
     > div {
       font-size: 24px;
@@ -304,12 +130,15 @@ export default {
 
       .middle {
         flex: auto;
+
         > div {
           font-size: 12px;
         }
-        >p {
+
+        > p {
           font-size: 12px;
-          >span {
+
+          > span {
             margin-right: 16px;
           }
         }

@@ -143,7 +143,7 @@ export default {
       margin: 0 auto;
       padding: 0 24px;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-evenly;
       align-items: flex-start;
       flex-wrap: wrap;
 

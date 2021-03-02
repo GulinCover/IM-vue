@@ -18,7 +18,7 @@
         <div class="two">
           <p>{{userData.userDesc}}</p>
         </div>
-        <div class="three">{{ locale.profileEditor }}</div>
+        <a href="/user/manager" target="_blank" class="three">{{ locale.profileEditor }}</a>
       </div>
 
       <div class="nav-bar">
@@ -37,9 +37,9 @@
           </div>
           <h3>{{userData.username}}</h3>
           <p>{{userData.userDesc}}</p>
-          <div class="profile-button">
+          <a href="/user/manager" target="_blank" class="profile-button">
             {{ locale.profileEditor }}
-          </div>
+          </a>
           <p>
             <map-pin-icon :size="'12'"/>
             <span>{{userData.location}}</span>
@@ -191,6 +191,7 @@ main {
         border-radius: 6px;
         border: 1px solid $index-page-main-border-color-grey;
         background: $index-page-main-background-color-grey;
+        color: black;
 
         &:hover {
           cursor: pointer;
@@ -198,9 +199,6 @@ main {
         }
       }
     }
-  }
-
-  > .nav-bar {
   }
 
   > .content {
@@ -241,7 +239,10 @@ main {
           padding-bottom: 16px;
         }
 
-        .profile-button {
+        a.profile-button {
+          width: 100%;
+          color: black;
+          display: inline-block;
           margin-bottom: 16px;
           border-radius: 6px;
           border: 1px solid $index-page-main-border-color-grey;
@@ -275,8 +276,6 @@ main {
       .right {
         width: 100%;
         text-align: start;
-
-
       }
     }
 
