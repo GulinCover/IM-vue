@@ -121,7 +121,7 @@
 <script>
 import icons from "@/icons/home.svg"
 import {BookIcon, LogOutIcon, BellIcon, PlusIcon, UserIcon, ClipboardIcon, ExternalLinkIcon} from "vue-feather-icons"
-import { HttpPost} from "@/http/indexPage";
+import {HttpPost} from "@/http/indexPage";
 
 export default {
   name: "TopBar",
