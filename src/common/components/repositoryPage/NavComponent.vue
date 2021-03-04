@@ -2,7 +2,7 @@
   <div class="nav-wrapper">
     <div class="nav">
       <div></div>
-      <div v-for="(item, key) in nav" :key="key" :ref="item.alias">
+      <div v-for="(item, key) in locale.repositoryPageNav" :key="key" :ref="item.alias">
         <a @click="jump(item.url)">{{ item.name }}</a>
       </div>
     </div>
@@ -13,45 +13,12 @@
 
 export default {
   name: "NavComponent",
-  props: [
-    "nav",
-    "headerBounding",
-    "height"
-  ],
+  data() {
+    return {
+      locale:this.$locale,
+    }
+  },
   methods: {
-    navFix() {
-      let nav = document.querySelector(".nav-wrapper")
-
-      try {
-        if (this.headerBounding instanceof Object) {
-          let header = this.headerBounding
-          const h = header.top + header.height
-          if (h <= 0) {
-            nav.style.top = `${window.scrollY - this.height}px`
-          } else {
-            nav.style.top = '0'
-          }
-
-        } else {
-          let header = document.querySelector("header").getBoundingClientRect()
-          const h = header.top + header.height
-          if (h <= 0) {
-            nav.style.top = `${window.scrollY - header.height}px`
-          } else {
-            nav.style.top = '0'
-          }
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    },
-
-    fresh() {
-      window.scrollTo({
-        top:0,
-      })
-    },
-
     jump(web) {
       if (web === this.$route.name) return
       window.open(`/repository/${web}`,"_self")
@@ -64,7 +31,7 @@ export default {
 
       const current = this.$route.name
 
-      for (let item of this.nav) {
+      for (let item of this.locale.repositoryPageNav) {
         if (item.alias === current) {
           this.$refs[current][0].classList.add("is-active")
           return
@@ -73,8 +40,6 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener("beforeunload", this.fresh)
-    window.addEventListener("scroll", this.navFix)
     this.isNavActive()
   },
 }
@@ -84,6 +49,7 @@ export default {
 @import "~@/api/GlobalApi.scss";
 
 .nav-wrapper {
+  width: 100%;
   border-bottom: 1px solid $index-page-main-border-color-grey-3;
   position: relative;
   top: 0;

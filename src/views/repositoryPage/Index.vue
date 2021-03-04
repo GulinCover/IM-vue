@@ -22,12 +22,7 @@
       </div>
 
       <div class="nav-bar">
-        <div class="placeholder"></div>
-        <nav-component
-            :nav="locale.repositoryPageNav"
-            :header-bounding="headerBounding"
-            :height="height"
-        />
+        <nav-component/>
       </div>
 
       <div class="content">
@@ -79,34 +74,12 @@ export default {
   data() {
     return {
       locale: this.$locale,
-      headerBounding: null,
-      height: null,
-
-      pathName: "overview",
-      placeholderHeight: "",
 
       userData: Object
     }
   },
 
   methods: {
-    fix() {
-      try{
-        this.headerBounding = document.querySelector(".placeholder").getBoundingClientRect()
-      } catch (e) {
-        console.log(e)
-      }
-    },
-
-    navSwitch() {
-      this.height = document.querySelector(".placeholder").getBoundingClientRect().top
-      window.addEventListener("scroll", this.fix)
-
-      if (this.$route.query.current !== null ||
-          this.$route.query.current !== ""
-      ) this.pathName = this.$route.query.current
-    },
-
     initUserData() {
       HttpPost(`/api/post/select/me/userInfo`).then(ret => {
         let res = ret.data.code.split(" ")
@@ -123,169 +96,172 @@ export default {
     }
   },
   mounted() {
-    this.navSwitch()
     this.initData()
-    window.onresize = ()=>{
-      this.fix()
-      this.navSwitch()
-    }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 @import "~@/api/GlobalApi.scss";
-
-main {
-  width: 100%;
-  margin-bottom: 40px;
-
-  @media screen and (min-width: $middle) {
-    .user-info-wrapper {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: $middle) {
-    .user-info-wrapper {
-      padding: 0 24px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-
-      .first {
-        width: 100%;
-        margin-bottom: 24px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        .avatar {
-          margin-right: 16px;
-          height: 16vw;
-          border-radius: 50%;
-          overflow: hidden;
-
-          img {
-            width: inherit;
-            height: inherit;
-          }
-        }
-
-        .desc {
-          text-align: start;
-          flex: 5;
-        }
-      }
-
-      .two {
-        margin-bottom: 16px;
-      }
-
-      .three {
-        width: 100%;
-        padding: 5px 16px;
-        margin-bottom: 16px;
-        border-radius: 6px;
-        border: 1px solid $index-page-main-border-color-grey;
-        background: $index-page-main-background-color-grey;
-        color: black;
-
-        &:hover {
-          cursor: pointer;
-          box-shadow: $color-shadow-medium;
-        }
-      }
-    }
-  }
-
-  > .content {
+.repository-wrapper {
+  main {
     width: 100%;
-    padding: 0 24px;
-    display: flex;
-    margin: 0 auto;
+    margin-bottom: 40px;
+
+    .nav-bar {
+      position: sticky;
+      top: 0;
+    }
 
     @media screen and (min-width: $middle) {
-      justify-content: flex-start;
-      align-items: flex-start;
-      max-width: 1012px;
+      .user-info-wrapper {
+        display: none;
+      }
+    }
 
-      .left {
-        margin-top: -32px;
-        padding: 8px;
-        width: 22%;
-        z-index: 99;
-        text-align: start;
+    @media screen and (max-width: $middle) {
+      .user-info-wrapper {
+        padding: 0 24px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
 
-        .avatar {
+        .first {
           width: 100%;
-          height: 0;
-          padding-bottom: 100%;
-          border-radius: 50%;
-          overflow: hidden;
+          margin-bottom: 24px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
 
-          img {
-            width: inherit;
+          .avatar {
+            margin-right: 16px;
+            height: 16vw;
+            border-radius: 50%;
+            overflow: hidden;
+
+            img {
+              width: inherit;
+              height: inherit;
+            }
+          }
+
+          .desc {
+            text-align: start;
+            flex: 5;
           }
         }
 
-        h3 {
-          padding-top: 16px;
+        .two {
+          margin-bottom: 16px;
         }
 
-        p {
-          padding-bottom: 16px;
-        }
-
-        a.profile-button {
+        .three {
           width: 100%;
-          color: black;
-          display: inline-block;
+          padding: 5px 16px;
           margin-bottom: 16px;
           border-radius: 6px;
           border: 1px solid $index-page-main-border-color-grey;
-          padding: 5px 16px;
-          text-align: center;
+          background: $index-page-main-background-color-grey;
+          color: black;
 
           &:hover {
             cursor: pointer;
             box-shadow: $color-shadow-medium;
           }
         }
+      }
+    }
+
+    > .content {
+      width: 100%;
+      padding: 0 24px;
+      display: flex;
+      margin: 0 auto;
+
+      @media screen and (min-width: $middle) {
+        justify-content: flex-start;
+        align-items: flex-start;
+        max-width: 1012px;
+
+        .left {
+          margin-top: -32px;
+          padding: 8px;
+          width: 22%;
+          z-index: 99;
+          text-align: start;
+
+          .avatar {
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+
+            img {
+              width: inherit;
+            }
+          }
+
+          h3 {
+            padding-top: 16px;
+          }
+
+          p {
+            padding-bottom: 16px;
+          }
+
+          a.profile-button {
+            width: 100%;
+            color: black;
+            display: inline-block;
+            margin-bottom: 16px;
+            border-radius: 6px;
+            border: 1px solid $index-page-main-border-color-grey;
+            padding: 5px 16px;
+            text-align: center;
+
+            &:hover {
+              cursor: pointer;
+              box-shadow: $color-shadow-medium;
+            }
+          }
+
+        }
+
+        .right {
+          width: 78%;
+          padding: 0 16px;
+          text-align: start;
+          z-index: -1;
+        }
 
       }
 
-      .right {
-        width: 78%;
+      @media screen and (max-width: $middle) {
         padding: 0 16px;
-        text-align: start;
 
+        .left {
+          display: none;
+        }
+
+        .right {
+          width: 100%;
+          text-align: start;
+          z-index: -1;
+        }
       }
 
     }
+  }
 
-    @media screen and (max-width: $middle) {
-      padding: 0 16px;
-
-      .left {
-        display: none;
-      }
-
-      .right {
-        width: 100%;
-        text-align: start;
-      }
-    }
-
+  footer {
+    margin: 0 auto;
+    max-width: 1012px;
+    border-top: 1px solid $index-page-main-border-color-grey;
   }
 }
 
-footer {
-  margin: 0 auto;
-  max-width: 1012px;
-  border-top: 1px solid $index-page-main-border-color-grey;
-}
 
 </style>
