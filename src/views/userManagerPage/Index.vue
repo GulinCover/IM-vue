@@ -8,17 +8,17 @@
       <div class="header">
         <div class="left">
           <div class="avatar">
-
+            <img :src="userData.userAvatar" alt="">
           </div>
           <div class="info">
-            <h3>Alex</h3>
-            <p>this is a user desc</p>
+            <h3>{{userData.username}}</h3>
+            <p>{{userData.userDesc}}</p>
           </div>
         </div>
         <div class="right">
-          <div class="button">
+          <a href="/repository/overview" class="button">
             前往仓库
-          </div>
+          </a>
         </div>
       </div>
       <div class="content">
@@ -73,6 +73,7 @@ import ProfileComponent from "@/common/components/userManagerPage/ProfileCompone
 import SecurityComponent from "@/common/components/userManagerPage/SecurityComponent";
 import BillComponent from "@/common/components/userManagerPage/BillComponent";
 import RepositoryComponent from "@/common/components/userManagerPage/RepositoryComponent";
+import {HttpPost} from "@/http/indexPage";
 export default {
   name: "Index",
   components: {
@@ -87,6 +88,8 @@ export default {
     return {
       locale:this.$locale,
       pathName: "profile",
+
+      userData: Object,
     }
   },
   methods: {
@@ -115,14 +118,33 @@ export default {
     jump(web) {
       if (web === this.$route.query.current) return
       window.open(`${this.$route.path}?current=${web}`,"_self")
-    }
+    },
+
+    initActive() {
+      this.isActive()
+
+      const curr = this.$route.query.current
+      if (curr === null) return
+      this.pathName = curr
+    },
+    initUserData() {
+      HttpPost(`/api/post/select/me/userInfo`).then(ret => {
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          this.$message.error(res[1])
+          return
+        }
+
+        this.userData = ret.data
+      }).catch(e => console.log(e))
+    },
+    initData() {
+      this.initUserData()
+    },
   },
   mounted() {
-    this.isActive()
-
-    const curr = this.$route.query.current
-    if (curr === null) return
-    this.pathName = curr
+    this.initData()
+    this.initActive()
   }
 }
 </script>
@@ -164,7 +186,21 @@ main {
           height: 48px;
           margin-right: 16px;
           border-radius: 50%;
-          background: red;
+
+          img {
+            width: inherit;
+            height: inherit;
+            border-radius: 50%;
+          }
+        }
+
+        .info {
+          h3 {
+            font-size: 14px;
+          }
+          p {
+            font-size: 12px;
+          }
         }
       }
 
@@ -195,6 +231,11 @@ main {
 
           > li {
             padding: 8px 16px;
+
+            &:hover {
+              cursor: pointer;
+              background: $index-page-main-background-color-grey;
+            }
 
             &.is-active {
               padding-left: 13px;
@@ -239,7 +280,21 @@ main {
           height: 48px;
           margin-right: 16px;
           border-radius: 50%;
-          background: red;
+
+          img {
+            width: inherit;
+            height: inherit;
+            border-radius: 50%;
+          }
+        }
+
+        .info {
+          h3 {
+            font-size: 14px;
+          }
+          p {
+            font-size: 12px;
+          }
         }
       }
 
@@ -270,6 +325,11 @@ main {
 
           > li {
             padding: 8px 16px;
+
+            &:hover {
+              cursor: pointer;
+              background: $index-page-main-background-color-grey;
+            }
 
             &.is-active {
               padding-left: 13px;

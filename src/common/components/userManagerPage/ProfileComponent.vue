@@ -44,12 +44,35 @@
 </template>
 
 <script>
+import {HttpPost} from "@/http/indexPage";
+
 export default {
   name: "ProfileComponent",
   data() {
     return {
-      locale:this.$locale
+      locale:this.$locale,
+
+      userData: Object
     }
+  },
+  methods: {
+    initUserData() {
+      HttpPost(`/api/post/select/me/userInfo`).then(ret => {
+        let res = ret.data.code.split(" ")
+        if (res[0] !== "200") {
+          this.$message.error(res[1])
+          return
+        }
+
+        this.userData = ret.data
+      }).catch(e => console.log(e))
+    },
+    initData() {
+      this.initUserData()
+    },
+  },
+  mounted() {
+    this.initData()
   }
 }
 </script>
